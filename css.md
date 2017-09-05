@@ -210,3 +210,19 @@ div :first-child:not(p)
 [data-age='11']
 [data-age="11"]
 ```
+## 7.清除浮动方法
+
+- #### 父级div定义 height 
+
+- #### 结尾处加空div标签 clear:both 
+
+- ```css
+  .clearfloat:after{display:block;clear:both;content:"";visibility:hidden;height:0} 
+  .clearfloat{zoom:1} 
+  ```
+
+- #### 父级div定义 overflow:hidden （浏览器会自动检查浮动区域的高度 ）
+
+- #### 父级div 也一起浮动
+
+- #### 父级div定义 display:table 

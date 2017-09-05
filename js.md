@@ -29,6 +29,8 @@ http://www.cnblogs.com/yzg1/p/5070037.html
 
 http://blog.csdn.net/joyhen/article/details/21631833
 
+https://mp.weixin.qq.com/s/NOmsbKZsryTUONQj2gBFIA
+
 ## 2.jsonp的实现原理
 
 #### 页面上 script 标签可以跨域，并且其 src 指定的js脚本到达浏览器会执行的特性，利用script标签的这一特性，将数据使用json格式用一个函数包裹起来，然后在进行访问的页面中定义一个相同函数名的函数，因为 script 标签src引用的js脚本到达浏览器时会执行，而我们有定义了一个同名的函数，所以json格式的数据，就做完参数传递给了我们定义的同名函数了。这样就完成了跨域数据交换。
@@ -319,3 +321,25 @@ http://www.cnblogs.com/wangfupeng1988/p/3994065.html
 http://www.ruanyifeng.com/blog/2009/08/learning_javascript_closures.html
 
 http://www.cnblogs.com/yunfeifei/p/4019504.html
+
+## 12.this的指向问题
+
+- #### 1.方法调用模式 
+
+  当一个函数被保存为对象的一个属性时, 我们称它为一个方法, 当一个方法被调用时, this指向该对象
+
+- #### 2.函数调用模式 （或全局）
+
+  当一个函数并非一个对象的属性时, 它被当作一个函数来调用, 此时的this指向全局对象(window)
+
+- #### 3.构造器调用模式
+
+  结合new前缀调用的函数被称为构造器函数, 此时的this指向该构造器函数的实例对象
+
+- #### 4.apply/call调用模式
+
+  apply和call方法可以让我们设定调用者中的this指向谁
+
+### 详情请参考:
+
+http://blog.csdn.net/babybk/article/details/51272790

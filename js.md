@@ -343,3 +343,93 @@ http://www.cnblogs.com/yunfeifei/p/4019504.html
 ### 详情请参考:
 
 http://blog.csdn.net/babybk/article/details/51272790
+
+## 13.定时器里面this指向问题
+
+- #### setTimeout函数中的this会指向window对象
+
+```jsx
+var num = 0;
+function Obj (){
+    this.num = 1,
+    this.getNum = function(){
+        console.log(this.num);
+    },
+    this.getNumLater = function(){
+        setTimeout(function(){
+            console.log(this.num);
+        }, 1000)
+    }
+}
+var obj = new Obj; 
+obj.getNum();//1　　打印的是obj.num，值为1
+obj.getNumLater()//0　　打印的是window.num，值为0
+```
+
+从上述例子中可以看到setTimeout中函数内的this是指向了window对象，这是由于`setTimeout()调用的代码运行在与所在函数`完全分离的执行环境上。这会导致这些代码中包含的 `this` 关键字会指向 `window` (或`全局`)对象
+
+- #### setTimeout(this.method, time)这种形式中的this，即上文中提到的第一个this，是根据上下文来判断的，默认为全局作用域，但不一定总是处于全局下，具体问题具体分析。
+
+  ```jsx
+  var value=33;
+  function Foo() {
+      this.value = 42;
+      this.method = function() {
+          // this 指向全局对象
+          alert(this)   // 输出window    第二个this
+          alert(this.value); // 输出：33   第二个this
+      };
+      setTimeout(this.method, 500);  // 这里的this指向Foo的实例对象  第一个this
+  }
+  new Foo();
+  ```
+
+- #### 利用bind()方法
+
+  ```jsx
+  var num = 0;
+  function Obj (){
+      this.num = 1,
+      this.getNum = function(){
+          console.log(this.num);
+      },
+      this.getNumLater = function(){
+          setTimeout(function(){
+              console.log(this.num);
+          }.bind(this), 1000)    //利用bind()将this绑定到这个函数上
+      }
+  }
+  var obj = new Obj; 
+  obj.getNum();//1　　打印的为obj.num，值为1
+  obj.getNumLater()//1　　打印的为obj.num，值为1
+  ```
+
+bind()方法是在Function.prototype上的一个方法，当被绑定函数执行时，bind方法会创建一个新函数，并将第一个参数作为新函数运行时的this。在这个例子中，在调用setTimeout中的函数时，bind方法创建了一个新的函数，并将this传进新的函数，执行的结果也就是正确的了。
+
+- #### 箭头函数
+
+  ```jsx
+  var num = 0;
+  function Obj (){
+      this.num = 1,
+      this.getNum = function(){
+          console.log(this.num);
+      },
+      this.getNumLater = function(){
+          setTimeout(() => {
+              console.log(this.num);
+          }, 1000)    //箭头函数中的this总是指向外层调用者，也就是Obj
+      }
+  }
+  var obj = new Obj; 
+  obj.getNum();//1　　打印的是obj.num，值为1
+  obj.getNumLater()//1　　打印的是obj.num，值为1
+  ```
+
+ES6中的箭头函数完全修复了this的指向，this总是指向词法作用域，也就是外层调用者obj，因此利用箭头函数就可以轻松解决这个问题。
+
+### 详情请参考:
+
+http://www.cnblogs.com/zsqos/p/6188835.html
+
+http://www.cnblogs.com/hutaoer/p/3423782.html

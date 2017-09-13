@@ -433,3 +433,23 @@ ES6中的箭头函数完全修复了this的指向，this总是指向词法作用
 http://www.cnblogs.com/zsqos/p/6188835.html
 
 http://www.cnblogs.com/hutaoer/p/3423782.html
+
+## 14.js框架封装
+
+#### 模拟jQuery框架，利用原生的js技术，封装一个js框架，以加深对jQuery的常用api的使用和面向对象原理的理解；
+
+#### 一：结构部分
+
+首先利用闭包，构造一个自执行函数，然后利用选择器函数Sizzle，获取dom元素；其后设置入口函数jQuery，返回一个F的实例；
+然后对jQuery.prototype进行设置；其后修改F的原型指向jQuery的原型,最后暴露出去两个接口$和jQuery；
+
+#### 二：jQuery.fn.extend = jQuery.extend = function(){}
+
+通过向jQuery的原型和jQuery上添加一个extend方法；
+可以实现扩展工具类方法和dom操作、css操作类的方法；
+jQuery.fn.extend(object); 对jQuery.fn即jQuery.prototype
+得扩展，就是为jQuery类添加“成员函数”。jQuery类的实例可以使用这个“成员函数”。
+
+### 详情请参考:
+
+http://www.cnblogs.com/marsqi/p/6280429.html

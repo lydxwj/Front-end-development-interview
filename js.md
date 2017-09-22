@@ -23,6 +23,8 @@ window对象有个`name`属性，该属性有个特征：即在一个窗口(wind
 
 ### 详情请参考:
 
+http://mp.weixin.qq.com/s/fDlyrRTv6zp-PQ1iRkTpBQ
+
 http://www.cnblogs.com/2050/p/3191744.html
 
 http://www.cnblogs.com/yzg1/p/5070037.html

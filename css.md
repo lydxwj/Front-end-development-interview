@@ -226,3 +226,93 @@ div :first-child:not(p)
 - #### 父级div 也一起浮动
 
 - #### 父级div定义 display:table 
+
+## 8.盒模型
+
+盒模型的组成：由里向外content,padding,border,margin.
+
+盒模型是有两种标准的，一个是标准模型，一个是IE模型。
+
+![img](https://images2017.cnblogs.com/blog/1265396/201711/1265396-20171119143703656-1332857321.png)
+
+![img](https://images2017.cnblogs.com/blog/1265396/201711/1265396-20171119144229156-49945808.png)
+
+ 
+
+ 从上面两图不难看出在标准模型中，盒模型的宽高只是内容（content）的宽高，
+
+而在IE模型中盒模型的宽高是内容(content)+填充(padding)+边框(border)的总宽高。
+
+- css如何设置两种模型
+
+这里用到了CSS3 的属性 box-sizing
+
+```
+/* 标准模型 */
+box-sizing:content-box;
+
+ /*IE模型*/
+box-sizing:border-box;
+```
+
+- JS获取宽高
+
+通过JS获取盒模型对应的宽和高，有以下几种方法：
+
+为了方便书写，以下用dom来表示获取的HTML的节点。
+
+1.  dom.style.width/height 
+
+　　这种方式只能取到dom元素内联样式所设置的宽高，也就是说如果该节点的样式是在style标签中或外联的CSS文件中设置的话，通过这种方法是获取不到dom的宽高的。
+
+2. dom.currentStyle.width/height 
+
+　　这种方式获取的是在页面渲染完成后的结果，就是说不管是哪种方式设置的样式，都能获取到。
+
+　　但这种方式只有IE浏览器支持。
+
+3. window.getComputedStyle(dom).width/height
+
+　　这种方式的原理和2是一样的，这个可以兼容更多的浏览器，通用性好一些。
+
+4. dom.getBoundingClientRect().width/height
+
+　　这种方式是根据元素在视窗中的绝对位置来获取宽高的
+
+5. dom.offsetWidth/offsetHeight
+
+　　这个就没什么好说的了，最常用的，也是兼容最好的。
+
+### 详情请参考:
+
+https://www.cnblogs.com/chengzp/p/cssbox.html
+
+## 9.display
+
+- display:none; 此元素将不被显示
+- display: block; 块级元素
+- display: inline; 行内元素
+- display：inline-block;  行内块
+- display:inherit; 从父元素继承 display 属性的值
+- display: table; 显示成 table样式
+- display: flex; 弹性布局   http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html
+- display: grid; 网格布局  https://blog.csdn.net/u012657197/article/details/79083258
+- display: list-item; 列表 
+- 。。。
+
+ https://baijiahao.baidu.com/s?id=1599614277825293572&wfr=spider&for=pc
+
+## 10.定位
+
+**position 属性规定元素的定位类型**
+
+##### 属性：
+
+- absolute生成绝对定位的元素，相对于 static 定位以外的第一个父元素进行定位。元素的位置通过 "left", "top", "right" 以及 "bottom" 属性进行规定。
+
+- fixed生成绝对定位的元素，相对于浏览器窗口进行定位。元素的位置通过 "left", "top", "right" 以及 "bottom" 属性进行规定。
+- relative生成相对定位的元素，相对于其正常位置进行定位。因此，"left:20" 会向元素的 LEFT 位置添加 20 像素。
+
+- static默认值。没有定位，元素出现在正常的流中（忽略 top, bottom, left, right 或者 z-index 声明）。
+- inherit规定应该从父元素继承 position 属性的值。
+

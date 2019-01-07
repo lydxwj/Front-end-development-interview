@@ -346,6 +346,8 @@ http://www.cnblogs.com/yunfeifei/p/4019504.html
 
 http://blog.csdn.net/babybk/article/details/51272790
 
+https://blog.csdn.net/qq_37467034/article/details/78311591
+
 ## 13.定时器里面this指向问题
 
 - #### setTimeout函数中的this会指向window对象
@@ -428,13 +430,21 @@ bind()方法是在Function.prototype上的一个方法，当被绑定函数执�
   obj.getNumLater()//1　　打印的是obj.num，值为1
   ```
 
-ES6中的箭头函数完全修复了this的指向，this总是指向词法作用域，也就是外层调用者obj，因此利用箭头函数就可以轻松解决这个问题。
+箭头函数有几个使用注意点。
+
+（1）函数体内的`this`对象，就是定义时所在的对象，而不是使用时所在的对象。
+
+（2）不可以当作构造函数，也就是说，不可以使用`new`命令，否则会抛出一个错误。
+
+（3）不可以使用`arguments`对象，该对象在函数体内不存在。如果要用，可以用 rest 参数代替。
+
+（4）不可以使用`yield`命令，因此箭头函数不能用作 Generator 函数。
 
 ### 详情请参考:
 
 http://www.cnblogs.com/zsqos/p/6188835.html
 
-http://www.cnblogs.com/hutaoer/p/3423782.html
+http://es6.ruanyifeng.com/#docs/function#%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0
 
 ## 14.js框架封装
 
@@ -455,3 +465,570 @@ jQuery.fn.extend(object); 对jQuery.fn即jQuery.prototype
 ### 详情请参考:
 
 http://www.cnblogs.com/marsqi/p/6280429.html
+
+## 15.ajax状态码
+
+#### Ajax状态值与状态码区别
+
+- AJAX状态值是指，运行Ajax所经历过的几种状态，无论访问是否成功都将响应的步骤，可以理解成为AJAX运行步骤。如：正在发送，正在响应等，由AJAX对象与服务器交互时所得；使用“ajax.readyState”获得。（由数字1~4单位数字组成） 
+
+- AJAX状态码是指，无论AJAX访问是否成功，由HTTP协议根据所提交的信息，服务器所返回的HTTP头信息代码，该信息使用“ajax.status”所获得；（由数字1XX,2XX三位数字组成，详细查看RFC）
+
+#### Ajax运行步骤与状态值说明
+
+在AJAX实际运行当中，对于访问XMLHttpRequest（XHR）时并不是一次完成的，而是分别经历了多种状态后取得的结果，对于这种状态在AJAX中共有5种，分别是: 
+
+- 0 - (未初始化)还没有调用send()方法
+- 1 - (载入)已调用send()方法，正在发送请求 
+- 2 - (载入完成)send()方法执行完成
+- 3 - (交互)正在解析响应内容 
+- 4 - (完成)响应内容解析完成，可以在客户端调用了 
+
+对于上面的状态，其中“0”状态是在定义后自动具有的状态值，而对于成功访问的状态（得到信息）我们大多数采用“4”进行判断
+
+#### Ajax状态码说明
+
+- 1**	请求收到，继续处理
+- 2**	操作成功收到，分析、接受
+- 3**	完成此请求必须进一步处理
+- 4**	请求包含一个错误语法或不能完成
+- 5**	服务器执行一个完全有效请求失败
+- 100	客户必须继续发出请求
+- 101	客户要求服务器根据请求转换HTTP协议版本
+- 200	交易成功
+- 201	提示知道新文件的URL
+- 202	接受和处理、但处理未完成
+- 203	返回信息不确定或不完整
+- 204	请求收到，但返回信息为空
+- 205	服务器完成了请求，用户代理必须复位当前已经浏览过的文件
+- 206	服务器已经完成了部分用户的GET请求
+- 300	请求的资源可在多处得到
+- 301	删除请求数据
+- 302	在其他地址发现了请求数据
+- 303	建议客户访问其他URL或访问方式
+- 304	客户端已经执行了GET，但文件未变化
+- 305	请求的资源必须从服务器指定的地址得到
+- 306	前一版本HTTP中使用的代码，现行版本中不再使用
+- 307	申明请求的资源临时性删除
+- 400	错误请求，如语法错误
+- 401	请求授权失败
+- 402	保留有效ChargeTo头响应
+- 403	请求不允许
+- 404	没有发现文件、查询或URl
+- 405	用户在Request-Line字段定义的方法不允许
+- 406	根据用户发送的Accept拖，请求资源不可访问
+- 407	类似401，用户必须首先在代理服务器上得到授权
+- 408	客户端没有在用户指定的饿时间内完成请求
+- 409	对当前资源状态，请求不能完成
+- 410	服务器上不再有此资源且无进一步的参考地址
+- 411	服务器拒绝用户定义的Content-Length属性请求
+- 412	一个或多个请求头字段在当前请求中错误
+- 413	请求的资源大于服务器允许的大小
+- 414	请求的资源URL长于服务器允许的长度
+- 415	请求资源不支持请求项目格式
+- 416	请求中包含Range请求头字段，在当前请求资源范围内没有range指示值，请求也不包含If-Range请求头字段
+- 417	服务器不满足请求Expect头字段指定的期望值，如果是代理服务器，可能是下一级服务器不能满足请求
+- 500	服务器产生内部错误
+- 501	服务器不支持请求的函数
+- 502	服务器暂时不可用，有时是为了防止发生系统过载
+- 503	服务器过载或暂停维修，宕机
+- 504	关口过载，服务器使用另一个关口或服务来响应用户，等待时间设定值较长
+- 505	服务器不支持或拒绝支请求头中指定的HTTP版本
+
+### 详情请参考:
+
+https://blog.csdn.net/qq_29627497/article/details/82027376
+
+## 16.盒子拖拽
+
+```html
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+        <style type="text/css">
+            #box{
+                width: 200px;
+                height: 200px;
+                background: lightskyblue;
+                position: absolute;
+            }
+        </style>
+        <script type="text/javascript">
+            window.onload=function(){
+                var oBox=document.getElementById('box');
+
+                var disx=0; //鼠标按住盒子box后,相对box的水平坐标，初始化
+                var disy=0;
+
+                oBox.onmousedown=function(ev){
+                    var oEvent=ev||event;
+                    disx=oEvent.clientX-oBox.offsetLeft;
+                    disy=oEvent.clientY-oBox.offsetTop;
+
+                    //不能用oBox.onmousemove=function(ev){}  
+                    //oBox的作用域相对document小，一旦鼠标拖拽速度很快,鼠标指针从盒子内部“甩出”，盒子就不会随着鼠标走
+                    document.onmousemove=function(ev){
+                        var oEvent=ev||event;
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                        //  加入下面这段，实现了， 鼠标拖拽盒子，不会出现，把盒子，甩出可视区域。
+                        var oLeft=oEvent.clientX-disx;
+                        var oTop=oEvent.clientY-disy;
+
+                        if(oLeft<0){
+                            oLeft=0;
+                        }
+                        //不能写else else不能判断，else后面是直接跟着{}，{}里面写结果
+                        //else if(){}用于多条件判断
+                        else if(oLeft>document.documentElement.clientWidth-oBox.offsetWidth){
+                            oLeft=document.documentElement.clientWidth-oBox.offsetWidth;
+                        }
+
+                        if(oTop<0){
+                            oTop=0;
+                        }
+                        //不能写else else不能判断，else后面是直接跟着{}，{}里面写结果
+                        //else if(){}用于多条件判断
+                        else if(oTop>document.documentElement.clientHeight-oBox.offsetHeight){
+                            oTop=document.documentElement.clientHeight-oBox.offsetHeight;
+                        }
+
+                        oBox.style.left=oLeft+'px';
+                        oBox.style.top=oTop+'px';
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++                      //oBox.style.left=oEvent.clientX-disx+'px';
+                        //oBox.style.top=oEvent.clientY-disy+'px';
+
+                    };
+                    //不能用oBox.onmousemove=function(ev)  
+                    //oBox的作用域相对document小，一旦鼠标拖拽速度很快，盒子就不会随着鼠标走
+                    document.onmouseup=function(){
+                        // 松开鼠标按键后，盒子不会再动。
+                        document.onmousedown=null;
+                        document.onmousemove=null;
+                    };
+
+                    return false; // 针对 火狐低版本的 二次拖拽出现的鬼影 。（但现在浏览器高版本，可能没有这个bug了。）
+                };                                              
+            };
+        </script>
+    </head>
+    <body>
+        <div id="box"></div>
+    </body>
+</html>
+```
+
+### 详情请参考:
+
+https://blog.csdn.net/ljs_cn/article/details/52812456
+
+#### 另一种拖拽
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        .div1{
+            width: 200px;
+            height: 200px;
+            border: 1px solid red;
+            position: relative;
+            margin-left:20px;
+            float: left;
+        }
+        .div2{
+            width: 200px;
+            height: 200px;
+            border: 1px solid blue;
+            position: relative;
+            margin-left:20px;
+            float: left;
+        }
+        .div3{
+            width: 200px;
+            height: 200px;
+            border: 1px solid green;
+            position: relative;
+            margin-left:20px;
+            float: left;
+        }
+        p{
+            background-color: orange;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="div1" id="div1">
+    <!--在h5中，如果想拖拽元素，就必须为元素添加draggable="true". 图片和超链接默认就可以拖拽-->
+    <p id="pe" draggable="true">试着把我拖过去</p>
+    <p id="pe1" draggable="true">试着也把我拖过去</p>
+</div>
+<div class="div2" id="div2"></div>
+<div class="div3" id="div3"></div>
+<script>
+    /*学习拖拽，主要就是学习拖拽事件*/
+    var obj=null;//当前被拖拽的地元素
+
+    /*应用于被拖拽元素的事件
+    *ondrag         应用于拖拽元素，整个拖拽过程都会调用--持续
+     ondragstart    应用于拖拽元素，当拖拽开始时调用
+     ondragleave    应用于拖拽元素，当鼠标离开拖拽元素时调用
+     ondragend    应用于拖拽元素，当拖拽结束时调用*/
+    document.ondragstart=function(e){
+        /*通过事件捕获来获取当前被拖拽的子元素*/
+        e.target.style.opacity=0.5;
+        e.target.parentNode.style.borderWidth="5px";
+        obj= e.target;
+        /*通过dataTransfer来实现数据的存储与获取
+        * setData(format,data):
+        * format:数据的类型：text/html   text/uri-list
+        * Data:数据:一般来说是字符串值*/
+        e.dataTransfer.setData("text/html", e.target.id);
+    }
+    document.ondragend=function(e){
+        e.target.style.opacity=1;
+        e.target.parentNode.style.borderWidth="1px";
+    }
+    document.ondragleave=function(e){
+    }
+    document.ondrag=function(e){
+    }
+
+    /*应用于目标元素的事件
+    *ondragenter    应用于目标元素，当拖拽元素进入时调用
+     ondragover    应用于目标元素，当停留在目标元素上时调用
+     ondrop        应用于目标元素，当在目标元素上松开鼠标时调用
+     ondragleave    应用于目标元素，当鼠标离开目标元素时调用*/
+    document.ondragenter=function(e){
+        console.log(e.target);
+    }
+    document.ondragover=function(e){
+        /*如果想触发ondrop事件，那么就必须在这个位置阻止浏览器的默认行为*/
+        e.preventDefault();
+    }
+    /*浏览器默认会阻止ondrop事件：我们必须在ondragover中阻止浏览器的默认行为*/
+    document.ondrop=function(e){
+        /*添加元素*/
+        //e.target.appendChild(obj);
+        /*通过e.dataTransfer.setData存储的数据，只能在drop事件中获取*/
+        var id=e.dataTransfer.getData("text/html");
+        /*console.log("id="+id);*/
+        e.target.appendChild(document.getElementById(id));
+    }
+    document.ondragleave=function(e){
+    }
+</script>
+</body>
+</html>
+```
+
+## 17.下拉刷新原理
+
+实现下拉刷新主要分为三步：
+
+- 监听原生`touchstart`事件，记录其初始位置的值，`e.touches[0].pageY`；
+- 监听原生`touchmove`事件，记录并计算当前滑动的位置值与初始位置值的差值，大于`0`表示向下拉动，并借助CSS3的`translateY`属性使元素跟随手势向下滑动对应的差值，同时也应设置一个允许滑动的最大值；
+- 监听原生`touchend`事件，若此时元素滑动达到最大值，则触发`callback`，同时将`translateY`重设为`0`，元素回到初始位置。
+
+```html
+<main>
+    <p class="refreshText"></p>
+    <ul id="refreshContainer">
+        <li>111</li>
+        <li>222</li>
+        <li>333</li>
+        <li>444</li>
+        <li>555</li>
+        ...
+    </ul>
+</main>
+```
+
+```js
+(function(window) {
+    var _element = document.getElementById('refreshContainer'),
+      _refreshText = document.querySelector('.refreshText'),
+      _startPos = 0,
+      _transitionHeight = 0;
+
+    _element.addEventListener('touchstart', function(e) {
+        console.log('初始位置：', e.touches[0].pageY);
+        _startPos = e.touches[0].pageY;
+        _element.style.position = 'relative';
+        _element.style.transition = 'transform 0s';
+    }, false);
+
+    _element.addEventListener('touchmove', function(e) {
+        console.log('当前位置：', e.touches[0].pageY);
+        _transitionHeight = e.touches[0].pageY - _startPos;
+
+        if (_transitionHeight > 0 && _transitionHeight < 60) {
+            _refreshText.innerText = '下拉刷新';
+            _element.style.transform = 'translateY('+_transitionHeight+'px)';
+
+            if (_transitionHeight > 55) {
+              _refreshText.innerText = '释放更新';
+            }
+        }                
+    }, false);
+
+    _element.addEventListener('touchend', function(e) {
+        _element.style.transition = 'transform 0.5s ease 1s';
+        _element.style.transform = 'translateY(0px)';
+        _refreshText.innerText = '更新中...';
+
+        // todo...
+
+    }, false);
+})(window);
+```
+
+在下拉到松手的过程中，经历了三个状态：
+
+- 当前手势滑动位置与初始位置差值大于零时，提示正在进行下拉刷新操作；
+- 下拉到一定值时，显示松手释放后的操作提示；
+- 下拉到达设定最大值松手时，执行回调，提示正在进行更新操作。
+
+### 详情请参考:
+
+https://www.cnblogs.com/zuobaiquan01/p/8874305.html
+
+## 18.JS三大对象
+
+分别是本地对象、内置对象和宿主对象
+
+- 本地对象
+
+  与宿主无关，独立于宿主环境的ECMAScript实现提供的对象。 简单来说，本地对象就是 ECMA-262 定义的类(引用类型)。 这些引用类型在运行过程中需要通过new来创建所需的实例对象。 包含：Object、Array、Date、RegExp、Function、Boolean、Number、String等。
+
+- 内置对象
+
+  与宿主无关，独立于宿主环境的ECMAScript实现提供的对象。 在 ECMAScript 程序开始执行前就存在，本身就是实例化内置对象，开发者无需再去实例化。 内置对象是本地对象的子集。 包含：Global和Math。 ECMAScript5中增添了JSON这个存在于全局的内置对象。
+
+- 宿主对象
+
+  由 ECMAScript 实现的宿主环境提供的对象，包含两大类，一个是宿主提供，一个是自定义类对象。 所有非本地对象都属于宿主对象。 对于嵌入到网页中的JS来说，其宿主对象就是[浏览器](https://www.2cto.com/os/liulanqi/)提供的对象，浏览器对象有很多，如Window和Document等。 所有的DOM和BOM对象都属于宿主对象。
+
+## 19.深浅拷贝
+
+**浅拷贝:** 浅拷贝就是对内存地址的复制，让目标对象指针和源对象指向同一片内存空间.
+
+```
+function shallowCopy(obj) {
+    var copy = {};
+    // 只复制可遍历的属性
+    for (key in obj) {
+        // 只复制本身拥有的属性
+        if (obj.hasOwnProperty(key)) {
+            copy[key] = obj[key];
+        }
+    }
+    return copy;
+}
+// 第二种
+var newObj = Object.assign({}, originObj);
+```
+
+**深拷贝:** 深拷贝是指拷贝对象的具体内容，而内存地址是自主分配的，拷贝结束之后，两个对象虽然存的值是相同的，但是内存地址不一样，两个对象也互不影响，互不干涉。
+
+```
+var deepClone = function(currobj){
+    if(typeof currobj !== 'object'){
+        return currobj;
+    }
+    if(currobj instanceof Array){
+        var newobj = [];
+    }else{
+        var newobj = {}
+    }
+    for(var key in currobj){
+        if(typeof currobj[key] !== 'object'){
+            // 不是引用类型，则复制值
+            newobj[key] = currobj[key];
+        }else{
+            // 引用类型，则递归遍历复制对象
+            newobj[key] = deepClone(currobj[key])    
+        }
+    }
+    return newobj
+}
+// 不处理循环引用，不处理对象原型，函数依然是引用类型
+```
+
+### 详情请参考:
+
+https://segmentfault.com/a/1190000011403163
+
+## 20.原型链
+
+![微信图片_20181231164914](.\assets\微信图片_20181231164914.jpg)
+
+#### 详情请参考:
+
+https://blog.csdn.net/yucihent/article/details/79424506
+
+## 21.js和JQuery入口函数的区别
+
+1. 原生Js和jQuery入口函数加载模式不同。
+   - 原生Js会等到DOM元素加载完毕，并且图片等资源也加载完毕才会执行
+   - jQuery会等到DOM元素加载完毕，但不会等到图片加载完毕就会执行
+2. 编写多个入口函数的区别
+   - 原生Js如果编写多个入口函数，后面编写的会覆盖前面编写的
+   - JQuery中编写多个入口函数，后面的不会覆盖前面的
+
+```
+// 原生JS的入口函数只能写一个 写多个就层叠覆盖
+window.onload= function () { 
+alert(“我是原生第一个入口函数”); 
+} 
+window.onload= function () { 
+alert(“我是原生第二个入口函数”); 
+}
+
+jquery入口函数三种方式:
+
+jQ 的入口函数 多个不会覆盖
+
+$(function () { 
+//文档和图片都加载完成 相当于原生的 window.onload 
+alert(“JQ的第一个入口”); 
+});
+
+$(document).ready(function () { // 文档加载出来以后执行 
+alert(“入口函数1”); 
+});
+
+$(window).ready(function () { //文档和图片全部加载完 执行 
+alert(“window加载完”); 
+})
+```
+
+#### 详情请参考:
+
+https://blog.csdn.net/weixin_42754512/article/details/81501863
+
+## 22.js变量提升
+
+通常JS引擎会在正式执行之前先进行一次预编译，在这个过程中，首先将变量声明及函数声明提升至当前作用域的顶端，然后进行接下来的处理。
+
+下面的代码中，我们在函数中声明了一个变量，不过这个变量声明是在if语句块中：
+
+```
+function hoistVariable() {
+
+    if (!foo) {
+        var foo = 5;
+    }
+
+    console.log(foo); // 5
+}
+
+hoistVariable();
+```
+
+运行代码，我们会发现foo的值是5，初学者可能对此不甚理解，如果外层作用域也存在一个foo变量，就更加困惑了，该不会是打印外层作用域中的foo变量吧？答案是：不会，如果当前作用域中存在此变量声明，无论它在什么地方声明，引用此变量时就会在当前作用域中查找，不会去外层作用域了。
+
+那么至于说打印结果，这要提到预编译机制了，经过一次预编译之后，上面的代码逻辑如下：
+
+```
+// 预编译之后
+function hoistVariable() {
+    var foo;
+
+    if (!foo) {
+        foo = 5;
+    }
+
+    console.log(foo); // 5
+}
+
+hoistVariable();
+```
+
+是的，引擎将变量声明提升到了函数顶部，初始值为undefined，自然，if语句块就会被执行，foo变量赋值为5，下面的打印也就是预期的结果了。
+
+#### 详情请参考:
+
+https://www.cnblogs.com/liuhe688/p/5891273.html
+
+https://www.cnblogs.com/kawask/p/6225317.html
+
+## 23.split与join的区别
+
+- 共同点：split与join函数通常都是对字符或字符串的操作；
+
+- 两者的区别：
+
+  1. split()用于分割字符串，返回一个数组，例如
+
+     ```
+     var string=“hello world?name=xiaobai”;
+     var splitString = string.split("?");
+     console.log(splitString);//["hello world","name=xiaobai"]
+     ```
+
+     split()只有一个参数时：分割的字符串或正则表达式；两个参数时，第二个参数是指返回的数组中元素的个数；
+
+  2. join()用于连接多个字符或字符串，返回值为一个字符串；例如
+
+     ```
+     var arr= new Array();
+     arr[0]="hello";
+     arr[1]="xiao";
+     arr[2]= "bai";
+     arr.join("&");//"hello&xiao&bai"
+     join();//默认分割符为逗号；
+     ```
+
+#### 详情请参考:
+
+https://www.cnblogs.com/wuting/p/7795626.html
+
+## 24.js获取URL中的参数
+
+```
+// 方法一
+function getQueryString(name) { 
+	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); 
+	var r = window.location.search.substr(1).match(reg); 
+	if (r != null) return unescape(r[2]); 
+	return null; 
+} 
+// 方法二
+function GetRequest() {  
+   var url = location.search; //获取url中"?"符后的字串  
+   var theRequest = new Object();  
+   if (url.indexOf("?") != -1) {  
+      var str = url.substr(1);  
+      strs = str.split("&");  
+      for(var i = 0; i < strs.length; i ++) {  
+         theRequest[strs[i].split("=")[0]]=unescape(strs[i].split("=")[1]);  
+      }  
+   }  
+   return theRequest;  
+}  
+// 方法三
+function getParam(paramName) { 
+    paramValue = "", isFound = !1; 
+    if (this.location.search.indexOf("?") == 0 && this.location.search.indexOf("=") > 1) { 
+        arrSource = unescape(this.location.search).substring(1, this.location.search.length).split("&"), i = 0; 
+        while (i < arrSource.length && !isFound) arrSource[i].indexOf("=") > 0 && arrSource[i].split("=")[0].toLowerCase() == paramName.toLowerCase() && (paramValue = arrSource[i].split("=")[1], isFound = !0), i++ 
+    } 
+    return paramValue == "" && (paramValue = null), paramValue 
+} 
+```
+
+#### 详情请参考:
+
+http://www.cnblogs.com/karila/p/5991340.html
+
+https://www.cnblogs.com/jing1208/p/6252408.html

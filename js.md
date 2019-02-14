@@ -21,9 +21,23 @@
 
 window对象有个`name`属性，该属性有个特征：即在一个窗口(window)的生命周期内,窗口载入的所有的页面都是共享一个window.name的，每个页面对window.name都有读写的权限，window.name是持久存在一个窗口载入过的所有页面中的，并不会因新页面的载入而进行重置。
 
+#### Websocket 
+
+HTML5 的一个持久化的协议，它实现了浏览器与服务器的全双工通信，同时也是跨域的一种解决方案。
+
+#### Node 中间件代理(两次跨域)
+
+实现原理，同源策略是浏览器需要遵循的标准，而如果是服务器向服务器请求就无需遵循同源策略。
+
+#### nginx 反向代理
+
+实现原理类似于 Node 中间件代理，需要你搭建一个中转 nginx 服务器，用于转发请求。
+
 ### 详情请参考:
 
 http://mp.weixin.qq.com/s/fDlyrRTv6zp-PQ1iRkTpBQ
+
+https://mp.weixin.qq.com/s/LV7qziMyrMt0_EJWo05qkA
 
 http://www.cnblogs.com/2050/p/3191744.html
 
@@ -217,7 +231,7 @@ arr1.find(function(value, index, arr) {
 arr1.every(function(e){
   return (e>5);
 });		//false  检测数组所有元素是否都符合指定条件
-arr1.every(function(e){
+arr1.some(function(e){
   return (e>5);
 });		//true  用于检测数组中的元素是否满足指定条件,有一个就可以
 ```
@@ -870,7 +884,7 @@ https://segmentfault.com/a/1190000011403163
 
 ## 20.原型链
 
-![微信图片_20181231164914](.\assets\微信图片_20181231164914.jpg)
+![20181231164914](./assets/20181231164914.jpg)
 
 #### 详情请参考:
 
@@ -1032,3 +1046,105 @@ function getParam(paramName) {
 http://www.cnblogs.com/karila/p/5991340.html
 
 https://www.cnblogs.com/jing1208/p/6252408.html
+
+## 25.事件冒泡
+
+- 当一个元素接收到事件的时候 会把他接收到的事件传给自己的父级，一直到window 。（注意这里传递的仅仅是事件 并不传递所绑定的事件函数。所以如果父级没有绑定事件函数，就算传递了事件 也不会有什么表现 但事件确实传递了。）
+
+- 事件捕获指的是从document到触发事件的那个节点，即自上而下的去触发事件。相反的，事件冒泡是自下而上的去触发事件。绑定事件方法的第三个参数，就是控制事件触发顺序是否为事件捕获。true,事件捕获；false,事件冒泡。默认false,即事件冒泡。
+
+- 不是所有的事件都能冒泡
+
+  blur、focus、load和unload不能像其它事件一样冒泡。事 实上blur和focus可以用事件捕获而非事件冒泡的方法获得（在IE之外的其它浏览器中）。
+
+#### 详情请参考:
+
+https://www.cnblogs.com/showersun/p/3673201.html
+
+## 26.递归
+
+- 调用自身的函数我们称之为*递归函数*。在某种意义上说，递归近似于循环。两者都重复执行相同的代码，并且两者都需要一个终止条件（避免无限循环或者无限递归）
+- 有三种方法可以达到这个目的：
+  1. 函数名
+  2. `arguments.callee`
+  3. 作用域下的一个指向该函数的变量名
+
+## 27.继承方式
+
+- 原型链继承
+
+- 对象冒充
+
+  ```
+  function Parent(username){
+    this.username = username;
+    this.hello = function(){
+     alert(this.username);
+    }
+  }
+  function Child(username,password){
+    //通过以下3行实现将Parent的属性和方法追加到Child中，从而实现继承
+    //第一步：this.method是作为一个临时的属性，并且指向Parent所指向的对象，
+    //第二步：执行this.method方法，即执行Parent所指向的对象函数
+    //第三步：销毁this.method属性，即此时Child就已经拥有了Parent的所有属性和方法 
+    this.method = Parent;
+    this.method(username);//最关键的一行
+    delete this.method;
+    this.password = password;
+    this.world = function(){
+     alert(this.password);
+    }
+  }
+  var parent = new Parent("zhangsan");
+  var child = new Child("lisi","123456");
+  parent.hello();
+  child.hello();
+  child.world();
+  ```
+
+- call()方法
+
+- apply()方法
+
+- 混合方式(混合了call方式、原型链方式)
+
+#### 详情请参考:
+
+https://www.cnblogs.com/greatluoluo/p/6273787.html
+
+## 28.面向对象
+
+- 面向过程就是分析出解决问题所需要的步骤，然后用函数把这些步骤一步一步实现，使用的时候一个一个依次调用就可以了。
+
+- 面向对象是把构成问题事务分解成各个对象，建立对象的目的不是为了完成一个步骤，而是为了描叙某个事物在整个解决问题的步骤中的行为。  
+
+  将你的需求抽象成一个对象，然后针对这个对象分析其特征(属性)与动作(方法)。而这个对象我们就称之为 类。
+
+- **封装：**就是把属性私有化，提供公共方法访问私有对象。
+
+- **继承：**当多个类具有相同的特征（属性）和行为（方法）时，可以将相同的部分抽取出来放到一个类中作为父类，其它类继承这个父类。
+
+- **多态：**简单来说就是“一种定义，多种实现”。同一类事物表现出多种形态。Java语言中有方法重载和对象多态两种形式的多态
+
+        方法重载：在一个类中，允许多个方法使用同一个名字，但是方法的参数不同，完成的功能也不同
+        对象多态：子类对象可以与父类对象进行相互转换，而且根据其使用的子类的不同，完成的功能也不同
+
+- **抽象：**抽象是从许多事物中，舍弃个表的，非本质的属性，抽取出共同的，本质的属性的过程。
+
+#### 详情请参考:
+
+https://blog.csdn.net/poison6/article/details/80373767
+
+https://blog.csdn.net/chuqtu/article/details/64473779
+
+## 29.a=’abc’, b=’asd’不使用第三个变量，来把a,b互换值
+
+```
+// ES6的解构
+[a, b] = [b, a];
+// 利用数组特性进行交换
+a = [a, b];
+b = a[0];
+a = a[1];
+```
+

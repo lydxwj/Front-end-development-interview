@@ -316,3 +316,267 @@ https://www.cnblogs.com/chengzp/p/cssbox.html
 - static默认值。没有定位，元素出现在正常的流中（忽略 top, bottom, left, right 或者 z-index 声明）。
 - inherit规定应该从父元素继承 position 属性的值。
 
+## 11.介绍css3
+
+- 选择器
+
+```scss
+[href$=‘.pdf’] //表示 href属性中以.pdf结尾的被选中
+[href^=‘mailto’] //表示href属性中以mailto开头的被选中
+[href*=‘item’] //表示href属性中含有item的都被选中
+[title~=flower] //	选择 title 属性包含单词 "flower" 的所有元素。	
+[lang|=en] //选择 lang 属性值以 "en" 开头的所有元素。
+p~ul  //选择前面有 <p> 元素的每个 <ul> 元素。
+div>p //选择父元素为 <div> 元素的所有 <p> 元素
+div+p	//选择紧接在 <div> 元素之后的所有 <p> 元素。
+:nth-of-type(odd)
+:nth-of-type(even)
+:nth-child
+:checked :enabled  :target ::selection  :not :empty  :root :before :after
+```
+
+- 背景
+
+```
+background-clip  background-origin
+background-size: contain 缩小图片以适合元素（维持像素长宽比）
+	cover 扩展元素以填补元素（维持像素长宽比）
+background-image:url(img_flwr.gif),url(img_tree.gif); // 多背景
+```
+
+- 边框
+
+```
+border-image	边框图像
+border-radius	圆角
+box-shadow	附加一个或多个盒子的阴影
+```
+
+- 渐变
+
+```
+// 线性渐变（Linear Gradients）- 向下/向上/向左/向右/对角方向
+background: linear-gradient(direction, color-stop1, color-stop2,...);
+// 径向渐变（Radial Gradients）- 由它们的中心定义
+background: radial-gradient(center, shape size, start-color,...,last-color);
+```
+
+- 文本效果
+
+| 属性                                                         | 描述                                                    |
+| ------------------------------------------------------------ | ------------------------------------------------------- |
+| [hanging-punctuation](http://www.runoob.com/cssref/css3-pr-hanging-punctuation.html) | 规定标点字符是否位于线框之外。                          |
+| [punctuation-trim](http://www.runoob.com/cssref/css3-pr-punctuation-trim.html) | 规定是否对标点字符进行修剪。                            |
+| text-align-last                                              | 设置如何对齐最后一行或紧挨着强制换行符之前的行。        |
+| text-emphasis                                                | 向元素的文本应用重点标记以及重点标记的前景色。          |
+| [text-justify](http://www.runoob.com/cssref/css3-pr-text-justify.html) | 规定当 text-align 设置为 "justify" 时所使用的对齐方法。 |
+| [text-outline](http://www.runoob.com/cssref/css3-pr-text-outline.html) | 规定文本的轮廓。                                        |
+| [text-overflow](http://www.runoob.com/cssref/css3-pr-text-overflow.html) | 规定当文本溢出包含元素时发生的事情。                    |
+| [text-shadow](http://www.runoob.com/cssref/css3-pr-text-shadow.html) | 向文本添加阴影。                                        |
+| [text-wrap](http://www.runoob.com/cssref/css3-pr-text-wrap.html) | 规定文本的换行规则。                                    |
+| [word-break](http://www.runoob.com/cssref/css3-pr-word-break.html) | 规定非中日韩文本的换行规则。                            |
+| [word-wrap](http://www.runoob.com/cssref/css3-pr-word-wrap.html) | 允许对长的不可分割的单词进行分割并换行到下一行。        |
+
+- 字体
+
+```
+@font-face{
+	font-family: myFirstFont;
+	src: url(sansation_light.woff);
+}
+div{
+	font-family:myFirstFont;
+}
+```
+
+-  转换和变形
+
+```
+transform	适用于2D或3D转换的元素
+transform-origin	允许您更改转化元素位置
+```
+
+| 函数                            | 描述                                     |
+| ------------------------------- | ---------------------------------------- |
+| matrix(*n*,*n*,*n*,*n*,*n*,*n*) | 定义 2D 转换，使用六个值的矩阵。         |
+| translate(*x*,*y*)              | 定义 2D 转换，沿着 X 和 Y 轴移动元素。   |
+| translateX(*n*)                 | 定义 2D 转换，沿着 X 轴移动元素。        |
+| translateY(*n*)                 | 定义 2D 转换，沿着 Y 轴移动元素。        |
+| scale(*x*,*y*)                  | 定义 2D 缩放转换，改变元素的宽度和高度。 |
+| scaleX(*n*)                     | 定义 2D 缩放转换，改变元素的宽度。       |
+| scaleY(*n*)                     | 定义 2D 缩放转换，改变元素的高度。       |
+| rotate(*angle*)                 | 定义 2D 旋转，在参数中规定角度。         |
+| skew(*x-angle*,*y-angle*)       | 定义 2D 倾斜转换，沿着 X 和 Y 轴。       |
+| skewX(*angle*)                  | 定义 2D 倾斜转换，沿着 X 轴。            |
+| skewY(*angle*)                  | 定义 2D 倾斜转换，沿着 Y 轴。            |
+
+3D转换属性
+
+下表列出了所有的转换属性：
+
+| 属性                                                         | 描述                                 | CSS  |
+| ------------------------------------------------------------ | ------------------------------------ | ---- |
+| [transform](http://www.runoob.com/cssref/css3-pr-transform.html) | 向元素应用 2D 或 3D 转换。           | 3    |
+| [transform-origin](http://www.runoob.com/cssref/css3-pr-transform-origin.html) | 允许你改变被转换元素的位置。         | 3    |
+| [transform-style](http://www.runoob.com/cssref/css3-pr-transform-style.html) | 规定被嵌套元素如何在 3D 空间中显示。 | 3    |
+| [perspective](http://www.runoob.com/cssref/css3-pr-perspective.html) | 规定 3D 元素的透视效果。             | 3    |
+| [perspective-origin](http://www.runoob.com/cssref/css3-pr-perspective-origin.html) | 规定 3D 元素的底部位置。             | 3    |
+| [backface-visibility](http://www.runoob.com/cssref/css3-pr-backface-visibility.html) | 定义元素在不面对屏幕时是否可见。     | 3    |
+
+3D 转换方法
+
+| 函数                                                         | 描述                                      |
+| ------------------------------------------------------------ | ----------------------------------------- |
+| matrix3d(*n*,*n*,*n*,*n*,*n*,*n*, *n*,*n*,*n*,*n*,*n*,*n*,*n*,*n*,*n*,*n*) | 定义 3D 转换，使用 16 个值的 4x4 矩阵。   |
+| translate3d(*x*,*y*,*z*)                                     | 定义 3D 转化。                            |
+| translateX(*x*)                                              | 定义 3D 转化，仅使用用于 X 轴的值。       |
+| translateY(*y*)                                              | 定义 3D 转化，仅使用用于 Y 轴的值。       |
+| translateZ(*z*)                                              | 定义 3D 转化，仅使用用于 Z 轴的值。       |
+| scale3d(*x*,*y*,*z*)                                         | 定义 3D 缩放转换。                        |
+| scaleX(*x*)                                                  | 定义 3D 缩放转换，通过给定一个 X 轴的值。 |
+| scaleY(*y*)                                                  | 定义 3D 缩放转换，通过给定一个 Y 轴的值。 |
+| scaleZ(*z*)                                                  | 定义 3D 缩放转换，通过给定一个 Z 轴的值。 |
+| rotate3d(*x*,*y*,*z*,*angle*)                                | 定义 3D 旋转。                            |
+| rotateX(*angle*)                                             | 定义沿 X 轴的 3D 旋转。                   |
+| rotateY(*angle*)                                             | 定义沿 Y 轴的 3D 旋转。                   |
+| rotateZ(*angle*)                                             | 定义沿 Z 轴的 3D 旋转。                   |
+| perspective(*n*)                                             | 定义 3D 转换元素的透视视图。              |
+
+- 过渡
+
+| 属性                                                         | 描述                                         |
+| ------------------------------------------------------------ | -------------------------------------------- |
+| [transition](http://www.runoob.com/cssref/css3-pr-transition.html) | 简写属性，用于在一个属性中设置四个过渡属性。 |
+| [transition-property](http://www.runoob.com/cssref/css3-pr-transition-property.html) | 规定应用过渡的 CSS 属性的名称。              |
+| [transition-duration](http://www.runoob.com/cssref/css3-pr-transition-duration.html) | 定义过渡效果花费的时间。默认是 0。           |
+| [transition-timing-function](http://www.runoob.com/cssref/css3-pr-transition-timing-function.html) | 规定过渡效果的时间曲线。默认是 "ease"。      |
+| [transition-delay](http://www.runoob.com/cssref/css3-pr-transition-delay.html) | 规定过渡效果何时开始。默认是 0。             |
+
+- 动画
+
+| 属性                                                         | 描述                                                     |
+| ------------------------------------------------------------ | -------------------------------------------------------- |
+| [@keyframes](http://www.runoob.com/cssref/css3-pr-animation-keyframes.html) | 规定动画。                                               |
+| [animation](http://www.runoob.com/cssref/css3-pr-animation.html) | 所有动画属性的简写属性，除了 animation-play-state 属性。 |
+| [animation-name](http://www.runoob.com/cssref/css3-pr-animation-name.html) | 规定 @keyframes 动画的名称。                             |
+| [animation-duration](http://www.runoob.com/cssref/css3-pr-animation-duration.html) | 规定动画完成一个周期所花费的秒或毫秒。默认是 0。         |
+| [animation-timing-function](http://www.runoob.com/cssref/css3-pr-animation-timing-function.html) | 规定动画的速度曲线。默认是 "ease"。                      |
+| [animation-delay](http://www.runoob.com/cssref/css3-pr-animation-delay.html) | 规定动画何时开始。默认是 0。                             |
+| [animation-iteration-count](http://www.runoob.com/cssref/css3-pr-animation-iteration-count.html) | 规定动画被播放的次数。默认是 1。                         |
+| [animation-direction](http://www.runoob.com/cssref/css3-pr-animation-direction.html) | 规定动画是否在下一周期逆向地播放。默认是 "normal"。      |
+| [animation-play-state](http://www.runoob.com/cssref/css3-pr-animation-play-state.html) | 规定动画是否正在运行或暂停。默认是 "running"。           |
+
+- 多列
+
+| 属性                                                         | 描述                                     |
+| ------------------------------------------------------------ | ---------------------------------------- |
+| [column-count](http://www.runoob.com/cssref/css3-pr-column-count.html) | 指定元素应该被分割的列数。               |
+| [column-fill](http://www.runoob.com/cssref/css3-pr-column-fill.html) | 指定如何填充列                           |
+| [column-gap](http://www.runoob.com/cssref/css3-pr-column-gap.html) | 指定列与列之间的间隙                     |
+| [column-rule](http://www.runoob.com/cssref/css3-pr-column-rule.html) | 所有 column-rule-* 属性的简写            |
+| [column-rule-color](http://www.runoob.com/cssref/css3-pr-column-rule-color.html) | 指定两列间边框的颜色                     |
+| [column-rule-style](http://www.runoob.com/cssref/css3-pr-column-rule-style.html) | 指定两列间边框的样式                     |
+| [column-rule-width](http://www.runoob.com/cssref/css3-pr-column-rule-width.html) | 指定两列间边框的厚度                     |
+| [column-span](http://www.runoob.com/cssref/css3-pr-column-span.html) | 指定元素要跨越多少列                     |
+| [column-width](http://www.runoob.com/cssref/css3-pr-column-width.html) | 指定列的宽度                             |
+| [columns](http://www.runoob.com/cssref/css3-pr-columns.html) | 设置 column-width 和 column-count 的简写 |
+
+-  盒模型
+
+```
+resize：none | both | horizontal | vertical | inherit
+box-sizing: content-box | border-box | inherit
+outline:outline-color outline-style outline-width outine-offset
+```
+
+resize属性指定一个元素是否应该由用户去调整大小。
+
+box-sizing 属性允许您以确切的方式定义适应某个区域的具体内容。
+
+outline-offset 属性对轮廓进行偏移，并在超出边框边缘的位置绘制轮廓。
+
+- 伸缩布局盒模型(弹性盒)
+
+| 属性                                                         | 描述                                                         |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| [display](http://www.runoob.com/cssref/pr-class-display.html) | 指定 HTML 元素盒子类型。flex                                 |
+| [flex-direction](http://www.runoob.com/cssref/css3-pr-flex-direction.html) | 指定了弹性容器中子元素的排列方式                             |
+| [justify-content](http://www.runoob.com/cssref/css3-pr-justify-content.html) | 设置弹性盒子元素在主轴（横轴）方向上的对齐方式。             |
+| [align-items](http://www.runoob.com/cssref/css3-pr-align-items.html) | 设置弹性盒子元素在侧轴（纵轴）方向上的对齐方式。             |
+| [flex-wrap](http://www.runoob.com/cssref/css3-pr-flex-wrap.html) | 设置弹性盒子的子元素超出父容器时是否换行。                   |
+| [align-content](http://www.runoob.com/cssref/css3-pr-align-content.html) | 修改 flex-wrap 属性的行为，类似 align-items, 但不是设置子元素对齐，而是设置行对齐 |
+| [flex-flow](http://www.runoob.com/cssref/css3-pr-flex-flow.html) | flex-direction 和 flex-wrap 的简写                           |
+| [order](http://www.runoob.com/cssref/css3-pr-order.html)     | 设置弹性盒子的子元素排列顺序。                               |
+| [align-self](http://www.runoob.com/cssref/css3-pr-align-self.html) | 在弹性子元素上使用。覆盖容器的 align-items 属性。            |
+| [flex](http://www.runoob.com/cssref/css3-pr-flex.html)       | 设置弹性盒子的子元素如何分配空间。                           |
+
+- 媒体查询
+
+```
+// css2媒体查询
+<link rel="stylesheet" type="text/css" href="layout.css" media="screen and (max-width: 960px)" />
+<style type="text/css" media="screen and (max-width: 960px)"></style>
+
+@media(min-width:800px)and(max-width:1200px)and(orientation:portrait){...}
+```
+
+- 反射（倒影）
+
+```
+-webkit-box-reflect:方向[ above-上 | below-下 | right-右 | left-左 ]，偏移量，遮罩图片
+```
+
+### 详情请参考:
+
+https://blog.csdn.net/chandoudeyuyi/article/details/69206236
+
+https://segmentfault.com/a/1190000010780991#articleHeader25
+
+## 12. sass、 less的scope
+
+- Sass的变量
+
+  Sass声明变量必须是`$`开头，后面紧跟变量名和变量值，而且变量名和变量值需要使用冒号（`：`）分隔开。就像CSS属性设置一样
+
+- LESS的变量
+
+  LESS样式中声明变量和调用变量和Sass一样，唯一的区别就是变量名前面使用的是`@`字符
+
+- 作用域（Scope）
+
+  CSS预处理器语言中的变量和其他程序语言一样，可以实现值的复用，同样它也存在生命周期，也就是Scope（变量范围，开发人员习惯称之为作用域），简单点讲就是局部变量还是全局变量的概念，查找变量的顺序是先在局部定义中找，如果找不到，则查找上级定义，直至全局。下面我们通过一个简单的例子来解释这三款CSS预处理器的作用域使用。
+
+  - Sass的作用域
+
+    Sass中作用域在这三款预处理器是最差的，可以说在Sass中是不存在什么全局变量。
+
+  - #### LESS的作用域
+
+    LESS中的作用域和其他程序语言中的作用域非常的相同，他首先会查找局部定义的变量，如果没有找到，会像冒泡一样，一级一级往下查找，直到根为止。
+
+### 详情请参考:
+
+https://www.cnblogs.com/hedgerow/p/4128055.html
+
+## 13.对于BFC的理解
+
+- 浮动元素和绝对定位元素，非块级盒子的块级容器（例如 inline-blocks, table-cells, 和 table-captions），以及overflow值不为“visiable”的块级盒子，都会为他们的内容创建新的BFC（块级格式上下文）。
+
+- 一个HTML元素要创建BFC，则满足下列的任意一个或多个条件即可：
+
+  1、float的值不是none。
+  2、position的值不是static或者relative。
+  3、display的值是inline-block、table-cell、flex、table-caption或者inline-flex
+  4、overflow的值不是visible
+
+  BFC是一个独立的布局环境，其中的元素布局是不受外界的影响，并且在一个BFC中，块盒与行盒（行盒由一行中所有的内联元素所组成）都会垂直的沿着其父元素的边框排列。
+
+- 利用BFC避免外边距折叠
+- BFC包含浮动
+
+### 详情请参考:
+
+https://www.cnblogs.com/libin-1/p/7098468.html
+
+https://www.cnblogs.com/dojo-lzz/p/3999013.html
+

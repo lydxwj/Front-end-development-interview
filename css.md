@@ -1,8 +1,8 @@
 ## 1.说明display:none与visibility:hidden的区别
 
-#### display:none不在文档中占位，不会被加载渲染到页面里，就好像这个元素不存在（render树上当然不会有，但是dom树上元素还是存在的，要不然怎么会响应事件呢），元素的子元素当然也不会出现在页面中，并且由于元素根本没有加载到页面中，所以即使子元素设置如display:block;也是无济于事。
+- display:none不在文档中占位，不会被加载渲染到页面里，就好像这个元素不存在（render树上当然不会有，但是dom树上元素还是存在的，要不然怎么会响应事件呢），元素的子元素当然也不会出现在页面中，并且由于元素根本没有加载到页面中，所以即使子元素设置如display:block;也是无济于事。
 
-#### visibility:hidden在文档中占位，子元素允许覆盖值（设置visibility:visible;元素可见），毕竟visibility:hidden;应用的元素 dom树，render树上都存在，所以这样的结果也是有迹可循。
+- visibility:hidden在文档中占位，子元素允许覆盖值（设置visibility:visible;元素可见），毕竟visibility:hidden;应用的元素 dom树，render树上都存在，所以这样的结果也是有迹可循。
 
 ## 2.flex用法
 

@@ -325,10 +325,26 @@ console.log(num)
 
   一个是前面提到的可以读取函数内部的变量，另一个就是让这些变量的值始终保持在内存中。
 
+  减少全局变量，减少传递函数的参数量，封装；
+
 - #### **闭包的注意点**
 
   - 由于闭包会使得函数中的变量都被保存在内存中，内存消耗很大，所以不能滥用闭包，否则会造成网页的性能问题，在IE中可能导致内存泄露。解决方法是，在退出函数之前，将不使用的局部变量全部删除。
   - 闭包会在父函数外部，改变父函数内部变量的值。所以，如果你把父函数当作对象（object）使用，把闭包当作它的公用方法（Public Method），把内部变量当作它的私有属性（private value），这时一定要小心，不要随便改变父函数内部变量的值。
+
+```
+function closure(){
+  var num = 1;
+  return function inner(){
+    console.log(num++);
+  }
+}  // 简单闭包示例
+```
+
+- 特性
+  - 函数嵌套函数
+  - 封闭性：外界无法访问闭包内部的数据，如果在闭包内声明变量，外界是无法访问的，除非闭包主动向外界提供访问接口； 
+  - 持久性：一般的函数，调用完毕之后，系统自动注销函数，而对于闭包来说，在外部函数被调用之后，闭包结构依然保存在。
 
 ### 详情请参考:
 
@@ -1148,3 +1164,556 @@ b = a[0];
 a = a[1];
 ```
 
+## 30.编写一个方法去掉一个数组的重复元素
+
+```
+// 方法一
+function uniq(array){
+    var temp = [];
+    for(var i = 0; i < array.length; i++){
+        if(temp.indexOf(array[i]) == -1){
+            temp.push(array[i]);
+        }
+    }
+    return temp;
+}
+//方法二
+function unique(arr){
+　　var res =[];
+　　var json = {};
+　　for(var i=0;i<arr.length;i++){
+　　　　if(!json[arr[i]]){
+　　　　　　res.push(arr[i]);
+　　　　　　json[arr[i]] = 1;
+　　　　}
+　　}
+　　return res;
+}
+//方法三
+function unique(arr){
+　　var arr2 = arr.sort();
+　　var res = [arr2[0]];
+　　for(var i=1;i<arr2.length;i++){
+　　　　if(arr2[i] !== res[res.length-1]){
+　　　　　　res.push(arr2[i]);
+　　　　}
+　　}
+　　return res;
+}
+//方法四
+function unique(arr){
+　　var res = [arr[0]];
+　　for(var i=1;i<arr.length;i++){
+　　　　var repeat = false;
+　　　　for(var j=0;j<res.length;j++){
+　　　　　　if(arr[i] == res[j]){
+　　　　　　　　repeat = true;
+　　　　　　　　break;
+　　　　　　}
+　　　　}
+　　　　if(!repeat){
+　　　　　　res.push(arr[i]);
+　　　　}
+　　}
+　　return res;
+}
+
+```
+
+#### 详情请参考:
+
+https://www.cnblogs.com/rongy/p/6597014.html
+
+https://www.cnblogs.com/baiyangyuanzi/p/6726258.html
+
+## 31.ajax请求时，如何解析json数据
+
+- eval();  //此方法不推荐
+
+- JSON.parse();  //推荐方法
+
+## 32.ajax请求，GET和POST区别
+
+- GET在浏览器回退时是无害的，而POST会再次提交请求。 
+- GET产生的URL地址可以被收藏（书签），而POST不可以。
+- GET请求会被浏览器主动cache，而POST不会，除非手动设置。 
+- GET请求只能进行url编码，而POST支持多种编码方式。
+- GET请求参数会被完整保留在浏览器历史记录里，而POST中的参数不会被保留。
+- GET请求在URL中传送的参数是有长度限制的，而POST么有。
+- 对参数的数据类型，GET只接受ASCII字符，而POST没有限制。
+- GET比POST更不安全，因为参数直接暴露在URL上，所以不能用来传递敏感信息。
+- GET参数通过URL传递，POST放在Request body中。
+
+#### 详情参考：
+
+https://www.cnblogs.com/logsharing/p/8448446.html
+
+## 33.函数的写法和调用方式
+
+```
+// 1.函数声明
+function sum(a, b) {
+return a + b;
+}
+// 调用
+sum(1,2);
+
+// 2.函数表达式
+var sum = function (a, b) {
+return a + b;
+}
+// 调用 
+sum(2, 3);
+
+// 3.作为一个对象的方法
+var foo = {
+sum: function(a, b) {
+ return a + b
+},
+subtraction: function(a, b) {
+ return a - b
+},
+multiplication: function (a, b) {
+ return a * b }
+}
+// 调用
+foo.sum(1, 4);
+
+// 4.构造函数中给对象添加方法
+var calculate = function() {};
+calculate.prototype.sum = function(a, b){
+return a + b
+}
+// 调用
+var calc = new calculate();
+calc.sum(1, 2);
+```
+
+#### 详情参考：
+
+https://www.cnblogs.com/chenyablog/p/7299000.html
+
+## 34.typeof返回哪些数据类型？
+
+　undefined、string、boolean、number、symbol、object、function
+
+## 35.'=='和'==='的区别？
+
+- ==表示等同,两边值类型不同的时候，要先进行类型的转换，再比较
+
+  ```
+  100 == "100"            // true
+  1 == true               // true
+  null == null            // true
+  undefined == undefined  // true
+  null == undefined       // true
+  true == "20"            // false
+  "1" == "01"             // false，此处等号两边值得类型相同，不要再转换类型了！！
+  NaN == NaN              // false，NaN和所有值包括自己都不相等。
+  ```
+
+- ===表示恒等,不做类型转换，类型不同的一定不等
+
+  ```
+  100 === "100"            // false
+  1 === true               // false
+  NaN === NaN              // false
+  null === undefined       // false
+  'abc' === "abc"          // true
+  false === false          // true
+  null === null            // true
+  undefined === undefined  // true
+  ```
+
+## 36.判断一个字符串'abcdddddef'中出现次数最多的字符，并统计次数？
+
+```
+var str = 'aabbccddd';
+    var obj = {}; /* 定义一个空的对象来接收结果 */
+    for (var i = 0; i < str.length; i++) {
+      /* charAt获取字符串的索引 */
+      /* 判断obj是否存在一个为 obj[str.charAt(i)] 的键；
+　　　　　　如果不存在，那么就添加这个键，并且赋值为1；
+　　　　　　如果已经存在这个键，那么就给这个键的值加1 */
+      if (!obj[str.charAt(i)]) {
+        obj[str.charAt(i)] = 1;
+      } else {
+        obj[str.charAt(i)]++;
+      }
+    }
+    console.log(obj);
+    /* 假设一个为0的值 和 一个空的字符串来存放键；
+　　for in 遍历obj对象 然后把每一个值和max对比；
+　　然后获取最大的值max 和 最大值对应的键maxno */
+    var max = 0;
+    var maxno = '';
+    for (var k in obj) {
+      if (obj[k] > max) {
+        max = obj[k];
+        maxno = k;
+      }
+    }
+    console.log(max + ' ' + maxno);
+```
+
+#### 详情参考：
+
+https://www.cnblogs.com/houfee/p/9300265.html
+
+## 37.简单实现一个发布订阅系统，包括on、emit、off等等
+
+https://blog.csdn.net/roamingcode/article/details/86238419
+
+## 38.简单实现promise.all方法
+
+```
+Promise.all = arr => {
+    let aResult = [];    //用于存放每次执行后返回结果
+    return new _Promise(function (resolve, reject) {
+      let i = 0;
+      next();    //开始逐次执行数组中的函数
+      function next() {
+        arr[i].then(function (res) {
+          aResult.push(res);    //执行后返回的结果放入数组中
+          i++;
+          if (i == arr.length) {    //如果函数数组中的函数都执行完，便把结果数组传给then
+            resolve(aResult);
+          } else {
+            next();
+          }
+        })
+      }
+    })
+```
+
+#### 详情参考：
+
+https://blog.csdn.net/Yvan_Lin/article/details/81100303
+
+## 39.简单实现jquery的jsonp请求方法
+
+```
+function jsonp(obj = {
+  type : 'get',
+  url : '#',
+  dataType : 'jsonp',
+  jsonp : 'callback',
+  data : {},
+  success: function(data) {console.log(data)}
+}) {
+  if(obj.dataType == 'jsonp'){
+    let cbName = 'jsonp' + ('1.11.1' + Math.random()).replace(/\D/g,"") + '_' + (new Date().getTime());
+    if(obj.jsonpCallback){
+      cbName = obj.jsonpCallback;
+    }
+    window[cbName] = function(data){
+      obj.success(data);
+    }
+    let param = '';
+    for(let attr in obj.data){
+        param += attr + '=' + obj.data[attr] + '&';
+    }
+    if(param){
+        param = param.substring(0,param.length-1);
+        param = '&' + param;
+    }
+    const script = document.createElement('script');
+    script.src = obj.url + '?' + obj.jsonp + '=' + cbName + param;
+    const head = document.getElementsByTagName('head')[0];
+    head.appendChild(script);
+  }
+}
+```
+
+## 40.手写快排
+
+```js
+function quickSort(arr){
+    //如果数组<=1,则直接返回
+    if(arr.length<=1){return arr;}
+    var pivotIndex=Math.floor(arr.length/2);
+    //找基准，并把基准从原数组删除
+    var pivot=arr.splice(pivotIndex,1)[0];
+    //定义左右数组
+    var left=[];
+    var right=[];
+
+    //比基准小的放在left，比基准大的放在right
+    for(var i=0;i<arr.length;i++){
+        if(arr[i]<=pivot){
+            left.push(arr[i]);
+        }
+        else{
+            right.push(arr[i]);
+        }
+    }
+    //递归
+    return quickSort(left).concat([pivot],quickSort(right));
+}         
+var list = [8,2,4,65,2,4,7,1,9,0,2,34,12];
+quickSort(list);
+console.log(list);
+```
+
+#### 详情参考：
+
+https://www.cnblogs.com/dll-ft/p/5850487.html
+
+https://www.jianshu.com/p/96d3ab441ee7
+
+## 42.对数组进行升序排序：var arr=[12,3,4,33,0,5,2,1,33];
+
+```
+//方法一
+for (var i = 0; i < arr.length; i++) {
+    var arrTrue = true;
+    for (var j = 0; j < arr.length - 1 - i; j++) {
+        if (arr[j] > arr[j + 1]) {
+            var tem = arr[j];
+            arr[j] = arr[j + 1];
+            arr[j + 1] = tem;
+            arrTrue = false;
+        };
+    };
+    if (arrTrue) {
+        break;
+    }
+};
+//方法二
+function ab(a, b) {
+    return a - b;
+}
+arr.sort(ab);
+```
+
+## 填空题
+
+- ```
+  console.log(1+2+'3')  ==> '33'
+  console.log('3'+2+1)  ==> '321'
+  console.log(+'3'+2+1)  ==> 6
+  console.log(1+ +'2'+3)   ==> 6
+  console.log('A'-'B'+'C')   ==> 'NaNC'
+  console.log(0&&2||1)   ==> 1
+  
+  var a=0.1,b=a+ ++a,c=a-- +b;console.log(a,b,c)  ==> 0.1 1.2 2.3
+  ```
+
+- ```
+  console.log('one');
+  setTimeout(function() {
+  	console.log('two')
+  }, 0);
+  console.log('three');
+  ==>
+  one
+  three
+  two
+  ```
+
+- ```
+  var length = 10;
+  function fn() {
+    alert(this.length);
+  }
+  var obj = {
+    length: 5,
+    callApi: function(fn) {
+      fn();
+      arguments[0]();
+    }
+  }
+  obj.callApi(fn, 2);
+  ==>
+  10
+  2
+  ```
+
+- ```
+  async function testSometing() {
+    console.log(1);
+    return 2;
+  }
+  async function testAsync() {
+    console.log(3);
+    return Promise.resolve(4);
+  }
+  async function test() {
+    console.log(5);
+    const v1 = await testSometing();
+    console.log(v1);
+    const v2 = await testAsync();
+    console.log(v2);
+  }
+  test();
+  const promise = new Promise(resolve => {
+    console.log(6);
+    resolve(7);
+  });
+  promise.then(val => console.log(val));
+  console.log(8);
+  
+  ===>
+  5 1 6 8 2 3 7 4
+  ```
+
+- ```
+  function Point(x=0,y=0){
+    this.x=x;
+    this.y=y;
+  }
+  const p=new Point();
+  
+  ====> p是
+  {x:0,y:0}
+  ```
+
+- 
+
+## 选择题
+
+- 将数组var a=[1,2,3]变成数组[4,3,2,1],下面的方法正确的是--多选（AC）
+
+  A. a.reverse().unshift(4)
+
+  B. a.push(4).reverse() 
+
+  C. a.push(4);a.reverse()
+
+  D. a.splice(3,1,4).reverse() 
+
+  解析：A。a.reverse()返回当前数组的倒序排列，并且修改了原数组a，unshift(4)在数组前面添加一个4，返回当前数组长度，unshift修改原数组，此时a变成了[4,3,2,1]；
+
+  B。a.push(4)在数组末尾添加一个4，push修改原数组，返回当前数组长度，长度无法调用reverse() 方法，此处会报错
+
+  C。根据上面分析可以得出，a.push(4);a.reverse()可以实现效果
+
+  D。a.splice(3,1,4)删除指定位置指定数量的数组元素，并在删除位置添加元素,splice方法会修改原数组，返回被删除的项目的新数组，此处返回的应该是[],再执行reverse()实际上是倒序一个空数组
+
+- 下列哪种方式可以在不改变原来数组的情况下，拷贝出来数组到b，且满足b!=a,例如数组a为[1,2,3]--多选（BD）
+
+  A.let b=a;
+
+  B.let b=a.slice();
+
+  C.let b=a.splice(0,0);
+
+  D.let b=a.concat();
+
+- 下面属于javascript基本数据类型的有（BCD）
+
+  A array
+
+  B number
+
+  C null
+
+  D undefined
+
+  E symbol
+
+  F json
+
+- 下面有关javascript内部对象的描述，正确的有？（ABCDE）
+
+  A.History对象包含用户（在浏览器窗口中）访问过的URL
+
+  B.Location对象包含有关当前URL的信息
+
+  C.Window对象表示浏览器中打开的窗口
+
+  D.Navigator对象包含有关浏览器的信息
+
+  E.Screen对象包含有关客户端显示屏的信息
+
+- 下列正则表达式中，可以匹配出是大小写字母数字十位的字符串（C）
+
+  A./^\w[A-z0-9]{10,}$/
+
+  B./^[A-z0-9]{10,}$/
+
+  C./^[A-Za-z0-9]{10,10}$/
+
+  D./^[A-Za-z0-9]\d{10,}$/
+
+- 程序打印出来的值（E）
+
+  ```
+  var a = (true+1),
+  	b = ('3'+0),
+  	c = (5+'12'),
+  	d = (undefined+11);
+  console.log(parseInt(a+b+c+d));
+  ```
+
+  A. 33
+
+  B. 32
+
+  C. 230512NaN
+
+  D.NaN
+
+  E.230512
+
+  F.230512undefined
+
+- 写出程序运行的结果（A）
+
+  ```
+  for(var i=0,j=0;i<10,j<6;i++,j++){
+      var k=i+j;
+  }
+  console.log(k);
+  ```
+
+  A.10
+
+  B.9
+
+  C.12
+
+  D.8
+
+- 写出程序运行的结果（B）
+
+  ```
+  var a=[];
+  for(var i=0;i<10;i++){
+    var c=i;
+    a[i]=function(){
+      console.log(c);
+    };
+  }
+  a[6]();
+  ```
+
+  A.8
+
+  B.9
+
+  C.10
+
+  D.11
+
+- 第2次的打印结果是（B）
+
+  ```
+  for(let i=0;i<5;++i){
+    setTimeout(function(){
+      console.log(i+'');
+    },100);
+  }
+  ```
+
+  A.0
+
+  B.1
+
+  C.2
+
+  D.5
+
+  E.空
+
+- 

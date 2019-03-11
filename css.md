@@ -580,3 +580,132 @@ https://www.cnblogs.com/libin-1/p/7098468.html
 
 https://www.cnblogs.com/dojo-lzz/p/3999013.html
 
+## 14.实现垂直水平居中
+
+```
+1.
+{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+}
+2.
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+3.
+.box {
+    display: table;
+}
+.content {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+}
+4.
+{
+    margin-top: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    transform: translate(0%,-50%);
+}
+```
+
+## 15.css的基本语句构成
+
+- 选择器：{属性：属性值;}
+
+## 16.行内元素有哪些？块级元素有哪些？
+
+```
+// 行内元素
+span、a、b、strong、i、lable、em、small
+// 块级元素
+div、p、h1~h6、ul、ol、dl、li、dd、table、hr、table
+menu、header、section、aside、footer
+```
+
+## 17.css引入的方式，link和@import的区别
+
+- 行内式
+
+  ```
+  <span style="color:red;">行内式</span>
+  ```
+
+- 嵌入式
+
+  ```
+  <style></style>
+  ```
+
+- 链接式
+
+  ```
+  <link href="test.css" type="text/css" rel="stylesheet" />
+  ```
+
+- 导入式
+
+  ````
+  @import(url(demo.css))
+  ````
+
+- 区别
+
+  - 从属关系区别
+    `@import`是 CSS 提供的语法规则，只有导入样式表的作用；`link`是HTML提供的标签，不仅可以加载 CSS 文件，还可以定义 RSS、rel 连接属性等。
+
+  - 加载顺序区别
+    加载页面时，`link`标签引入的 CSS 被同时加载；`@import`引入的 CSS 将在页面加载完毕后被加载。
+
+  - 兼容性区别
+    `@import`是 CSS2.1 才有的语法，故只可在 IE5+ 才能识别；`link`标签作为 HTML 元素，不存在兼容性问题。
+  - DOM可控性区别
+    可以通过 JS 操作 DOM ，插入`link`标签来改变样式；由于 DOM 方法是基于文档的，无法使用`@import`的方式插入样式。
+
+#### 详情参考：
+
+https://www.cnblogs.com/my--sunshine/p/6872224.html
+
+## 选择题
+
+- 以下关于css3 box-sizing的描述正确的是（ACDE）
+
+  A.content-box, border和padding不计算入width之内
+
+  B.content-box, border计算入width之内
+
+  C.padding-box, padding计算入width之内
+
+  D.border-box, border计算入width之内
+
+  E.border-box, border和padding计算入width之内
+
+- div的最终颜色（D）
+
+  ```
+  <div id="divId" class="div_class"></div>
+  <style>
+  div{background: #f00;height:10px;}
+  .div_class{background:#0f0;}
+  .class{background:#000!important;}
+  #divId{background:#00f;}
+  div.div_class{background:#aaa;}
+  </style>
+  ```
+
+  A.#f00
+
+  B.#0f0
+
+  C.#000
+
+  D.#00f
+
+  E.#aaa
+
+- 

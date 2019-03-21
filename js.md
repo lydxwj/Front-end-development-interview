@@ -1486,6 +1486,202 @@ function ab(a, b) {
 arr.sort(ab);
 ```
 
+## 43.数组去重
+
+```
+// 方法一
+function uniq(array){
+    var temp = []; //一个新的临时数组
+    for(var i = 0; i < array.length; i++){
+        if(temp.indexOf(array[i]) == -1){
+            temp.push(array[i]);
+        }
+    }
+    return temp;
+}
+// 方法二
+function uniq(array){
+    var temp = {}, r = [], len = array.length, val, type;
+    for (var i = 0; i < len; i++) {
+        val = array[i];
+        type = typeof val;
+        if (!temp[val]) {
+            temp[val] = [type];
+            r.push(val);
+        } else if (temp[val].indexOf(type) < 0) {
+            temp[val].push(type);
+            r.push(val);
+        }
+    }
+    return r;
+}
+// 方法三
+function uniq(array){
+    array.sort();
+    var temp=[array[0]];
+    for(var i = 1; i < array.length; i++){
+        if( array[i] !== temp[temp.length-1]){
+            temp.push(array[i]);
+        }
+    }
+    return temp;
+}
+```
+
+#### 详情参考：
+
+https://www.cnblogs.com/baiyangyuanzi/p/6726258.html
+
+## 44.列出下面代码不足及优化方案
+
+```
+var node = document.querySelectorAll('ul li');
+for (var i = 0; i < node.length; i++) {
+  node[i].addEventListener('click', function() {
+    alert('click' + i)
+  })
+}
+```
+
+- 第一点每一个dom元素li点击都是弹出`click6`
+
+  解决办法把for循环中不适用var定义i，使用let代替
+
+- 为每一个li绑定事件
+
+  解决事件绑定在ul上面，在每一个li元素上面绑定data-**属性，或者class、id之类的来获取是第几个li元素，e.target得到当前li，然后获取当前li的绑定属性得到是第一个元素
+
+## 45.举例3种强制类型转换和2种隐式类型转换
+
+- 强制类型转换
+
+  转换为数值类型：Number(mix)、parseInt(string,radix)、parseFloat(string)
+  转换为字符串类型：toString(radix)、String(mix)
+  转换为布尔类型：Boolean(mix)
+
+- 隐式类型转换
+
+  1、 用于检测是否为非数值的函数：isNaN(mix)
+
+  - isNaN()函数，经测试发现，该函数会尝试将参数值用Number()进行转换，如果结果为“非数值”则返回true，否则返回false。
+
+  2、递增递减操作符（包括前置和后置）、一元正负符号操作符
+
+  - 这些操作符适用于任何数据类型的值，针对不同类型的值，该操作符遵循以下规则（经过对比发现，其规则与Number()规则基本相同）：
+    （1）如果是包含有效数字字符的字符串，先将其转换为数字值（转换规则同Number()），在执行加减1的操作，字符串变量变为数值变量。
+    （2）如果是不包含有效数字字符的字符串，将变量的值设置为NaN，字符串变量变成数值变量。
+    （3）如果是布尔值false，先将其转换为0再执行加减1的操作，布尔值变量编程数值变量。
+    （4）如果是布尔值true，先将其转换为1再执行加减1的操作，布尔值变量变成数值变量。
+    （5）如果是浮点数值，执行加减1的操作。
+    （6）如果是对象，先调用对象的valueOf()方法，然后对该返回值应用前面的规则。如果结果是NaN，则调用toString()方法后再应用前面的规则。对象变量变成数值变量。
+
+  3、 加法运算操作符
+
+  - 加号运算操作符在Javascript也用于字符串连接符，所以加号操作符的规则分两种情况：
+    如果两个操作值都是数值，其规则为：
+    (1)如果一个操作数为NaN，则结果为NaN
+    (2)如果是Infinity+Infinity，结果是Infinity
+    (3)如果是-Infinity+(-Infinity)，结果是-Infinity
+    (4)如果是Infinity+(-Infinity)，结果是NaN
+    (5)如果是+0+(+0)，结果为+0
+    (6)如果是(-0)+(-0)，结果为-0
+    (7)如果是(+0)+(-0)，结果为+0
+
+  4、 乘除、减号运算符、取模运算符
+
+  - 这些操作符针对的是运算，所以他们具有共同性：如果操作值之一不是数值，则被隐式调用Number()函数进行转换。具体每一种运算的详细规则请参考ECMAScript中的定义。
+
+  5、 逻辑操作符（!、&&、||）
+
+  - 逻辑非（！）操作符首先通过Boolean()函数将它的操作值转换为布尔值，然后求反。
+    一、逻辑与（&&）操作符，如果一个操作值不是布尔值时，遵循以下规则进行转换：
+    （1）如果第一个操作数经Boolean()转换后为true，则返回第二个操作值，否则返回第一个值（不是Boolean()转换后的值）
+    （2）如果有一个操作值为null，返回null
+    （3）如果有一个操作值为NaN，返回NaN
+    （4）如果有一个操作值为undefined，返回undefined
+    逻辑或（||）操作符，如果一个操作值不是布尔值，遵循以下规则：
+    （1）如果第一个操作值经Boolean()转换后为false，则返回第二个操作值，否则返回第一个操作值（不是Boolean()转换后的值）
+    （2）对于undefined、null和NaN的处理规则与逻辑与（&&）相同
+
+  6、 关系操作符（<, >, <=, >=）
+
+  - 与上述操作符一样，关系操作符的操作值也可以是任意类型的，所以使用非数值类型参与比较时也需要系统进行隐式类型转换：
+    （1）如果两个操作值都是数值，则进行数值比较
+    （2）如果两个操作值都是字符串，则比较字符串对应的字符编码值
+    （3）如果只有一个操作值是数值，则将另一个操作值转换为数值，进行数值比较
+    （4）如果一个操作数是对象，则调用valueOf()方法（如果对象没有valueOf()方法则调用toString()方法），得到的结果按照前面的规则执行比较
+    （5）如果一个操作值是布尔值，则将其转换为数值，再进行比较
+    注：NaN是非常特殊的值，它不和任何类型的值相等，包括它自己，同时它与任何类型的值比较大小时都返回false。
+
+  7、 相等操作符（==）
+
+  - 相等操作符会对操作值进行隐式转换后进行比较：
+    （1）如果一个操作值为布尔值，则在比较之前先将其转换为数值
+    （2）如果一个操作值为字符串，另一个操作值为数值，则通过Number()函数将字符串转换为数值
+    （3）如果一个操作值是对象，另一个不是，则调用对象的valueOf()方法，得到的结果按照前面的规则进行比较
+    （4）null与undefined是相等的
+    （5）如果一个操作值为NaN，则相等比较返回false
+    （6）如果两个操作值都是对象，则比较它们是不是指向同一个对象
+
+#### 详情参考：
+
+https://www.cnblogs.com/Juphy/p/7085197.html
+
+## 46.阻止事件冒泡和默认行为
+
+```
+// 阻止冒泡
+function stopPropagation(e){
+ 	var e = window.event || e;
+ 	if(document.all){
+ 		e.cancelBubble = true;
+ 	}else{
+ 		e.stopPropagation();
+ 	}
+ }
+ 
+ // 阻止默认行为
+  function preventDefaultAction(event){
+  	var event = window.event || event;
+  	if(document.all){
+  		event.returnValue = false;
+  	}else{
+  		event.preventDefault();
+  	}
+  }
+  
+  // 阻止冒泡和默认
+function stop(){  
+    return false;  
+} 
+```
+
+## 47.javascript有几种数据类型，画内存图
+
+- 基本数据类型储存在栈中，其他如：数组 /函数/对象等储存在堆中。
+
+  栈：原始数据类型：(Undefined/Null/Boolean/Number/String)
+
+  堆：引用数据类型（对象/数组/函数）
+
+- **两种类型的区别：储存位置不同**
+  - 原始数据类型直接储存在栈（stack）中简单数据，占据空间小/大小固定，属于被频繁使用数据，所以放在栈中储存。
+  - 引用数据储存在堆中的对象 : 占据空间大，大小不固定，如果储存在栈中，将影响程序的运行性能；
+
+![type](./assets/type.webp)
+
+#### 详情参考：
+
+https://blog.csdn.net/lxcao/article/details/52749421?utm_source=itdadao&utm_medium=referral
+
+## 48.call和apply的作用和区别
+
+
+
+## 49.jQuery的属性拷贝（extend）的实现原理
+
+
+
 ## 填空题
 
 - ```
@@ -1566,6 +1762,67 @@ arr.sort(ab);
   
   ====> p是
   {x:0,y:0}
+  ```
+
+- ```
+  let a = [ 12, 3, 4, 33, 0, 5, 4, 12, 33 ];
+  const b = [];
+  a.filter(p => {
+    b.push(b.includes(p)? '' : p);
+    return b;
+  });
+  
+  ===> 
+  a [12, 3, 4, 33, 0, 5, 4, 12, 33]
+  b [12, 3, 4, 33, 0, 5, "", "", ""]
+  ```
+
+- ```
+  let x = 99;
+  function foo(p = x + 1) {
+    console.log(p);
+  }
+  foo();
+  x = 100;
+  foo();
+  
+  ===>
+  100
+  101
+  ```
+
+- ```
+  let a = [ {a:1}, {b:1} ], val = 2;
+  var b = a.map(item => ({ ...item, status: val ? 1 : 0 }));
+  
+  ===> b
+  [{ a: 1, status: 1 }, { b: 1, status: 1 },]
+  ```
+
+- ```
+  function fn() {
+    this.a = 0;
+    this.b = function() {
+      alert(this.a)
+    }
+  }
+  fn.prototype = {
+    b: function() {
+      this.a = 20;
+      alert(this.a);
+    },
+    c: function() {
+      this.a = 30;
+      alert(this.a);
+    }
+  }
+  var myfn = new fn();
+  myfn.b();
+  myfn.c();
+  
+  ===>
+  0
+  30
   ```
 
 - 

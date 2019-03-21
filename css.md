@@ -618,17 +618,7 @@ https://www.cnblogs.com/dojo-lzz/p/3999013.html
 
 - 选择器：{属性：属性值;}
 
-## 16.行内元素有哪些？块级元素有哪些？
-
-```
-// 行内元素
-span、a、b、strong、i、lable、em、small
-// 块级元素
-div、p、h1~h6、ul、ol、dl、li、dd、table、hr、table
-menu、header、section、aside、footer
-```
-
-## 17.css引入的方式，link和@import的区别
+## 16.css引入的方式，link和@import的区别
 
 - 行内式
 
@@ -670,6 +660,154 @@ menu、header、section、aside、footer
 #### 详情参考：
 
 https://www.cnblogs.com/my--sunshine/p/6872224.html
+
+## 17.写出div（包含文字的）最后的font-size和color
+
+```
+<style>
+div{
+  width: 1rem;
+  color: blue;
+}
+.class1{
+  font-size: .32rem;
+  color: red;
+}
+#id1{
+  color: #333;
+}
+#id1 div{
+  color: #666;
+}
+.class1 div{
+  color: #999;
+}
+.class1 .class2 div{
+  color: #aaa;
+}
+</style>
+html
+<div class="class1">
+  <div id="id1" class="class2">
+    <div>文字</div>
+  </div>
+</div>
+```
+
+font-size: .32rem; color: #666;
+
+## 18.css权重优先级计算
+
+```
+！important>行间样式>id选择器>class选择器 属性选择器>标签选择器>通配符
+
+第一等级：代表 内联样式，如 style=""，权值为 1,0,0,0；
+第二等级：代表 ID选择器，如 #id="", 权值为 0,1,0,0；
+第三等级：代表 calss | 伪类 | 属性 选择器，如 .class | :hover,:link,:target | [type], 权值 0,0,1,0；
+第四等级：代表 标签 | 伪元素 选择器，如 p | ::after, ::before, ::fist-inline, ::selection, 权值 0,0,0,1；
+此外，通用选择器（*），子选择器（>）， 相邻同胞选择器（+）等选择器不在4等级之内，所以它们的权值都为 0,0,0,0；
+```
+
+#### 详情参考：
+
+https://www.cnblogs.com/cnblogs-jcy/p/8574177.html
+
+https://blog.csdn.net/gaoshanyangzhi_1999/article/details/80726580
+
+## 19.如何居中浮动元素
+
+```
+// html
+<div class="outerbox">  
+     <div class="innerbox">我是浮动的</div>  
+</div>
+// css
+.outerbox{  
+	float:left;   
+	position:relative;   
+	left:50%;   
+}   
+.innerbox{    
+	float:left;   
+	position:relative;   
+	right:50%;   
+}
+// 第二种
+.outerbox{
+    display: flex;
+    justify-content: center;
+}
+```
+
+#### 详情参考：
+
+https://mp.weixin.qq.com/s/UxY7VWqMMOjvgE6L_dlixA
+
+## 20.浏览器兼容问题
+
+- 不同浏览器的标签默认的margin和padding不同
+
+  解决方案： css 里增加通配符 * { margin: 0; padding: 0; }或者其他样式初始化
+
+- IE6双边距问题；在 IE6中设置了float , 同时又设置margin , 就会出现边距问题
+  解决方案：设置display:inline;
+
+- 当标签的高度设置小于10px，在IE6、IE7中会超出自己设置的高度
+  解决方案：超出高度的标签设置overflow:hidden,或者设置line-height的值小于你的设置高度
+
+- 图片默认有间距
+  解决方案：使用float 为img 布局
+
+- IE9一下浏览器不能使用opacity
+  解决方案：
+  opacity: 0.5;filter: alpha(opacity = 50);filter: progid:DXImageTransform.Microsoft.Alpha(style = 0, opacity = 50);
+
+- 边距重叠问题；当相邻两个元素都设置了margin 边距时，margin 将取最大值，舍弃最小值；
+  解决方案：为了不让边重叠，可以给子元素增加一个父级元素，并设置父级元素为overflow:hidden；
+
+- cursor:hand 显示手型在safari 上不支持
+  解决方案：统一使用 cursor:pointer
+
+- 两个块级元素，父元素设置了overflow:auto；子元素设置了position:relative ;且高度大于父元素，在IE6、IE7会被隐藏而不是溢出；
+
+  解决方案：父级元素设置position:relative
+
+#### 详情参考：
+
+https://blog.csdn.net/wanmeiyinyue315/article/details/79654984
+
+## 21.常用hack技巧
+
+- ```
+  /*类内部hack：*/ 
+  .header {_width:100px;}            /* IE6专用*/
+  .header {*+width:100px;}        /* IE7专用*/ 
+  .header {*width:100px;}            /* IE6、IE7共用*/ 
+  .header {width:100px\0;}        /* IE8、IE9共用*/ 
+  .header {width:100px\9;}        /* IE6、IE7、IE8、IE9共用*/ 
+  .header {width:330px\9\0;}    /* IE9专用*/  /*选择器Hack：*/
+  *html .header{}        /*IE6*/ 
+  *+html .header{}    /*IE7*/ 
+  ```
+
+- ```
+  ie内核浏览器识别
+  <!--[if IE]><![endif]-->
+  ie6内核浏览器识别
+  <!--[if IE 6]><![endif]-->
+  ie7及其以上内核浏览器识别
+  <!--[if gte IE 7]><![endif]-->
+  ie7及其以下内核浏览器识别
+  <!--[if lte IE 7]><![endif]-->
+  非ie内核浏览器识别
+  <!--[if !IE]><![endif]-->
+  非ie7及其以下内核浏览器识别
+  <!--[if !(lte IE 7)]><!-->
+  ```
+
+#### 详情参考：
+
+https://blog.csdn.net/u598975767/article/details/51242773
 
 ## 选择题
 

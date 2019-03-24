@@ -1676,11 +1676,126 @@ https://blog.csdn.net/lxcao/article/details/52749421?utm_source=itdadao&utm_medi
 
 ## 48.call和apply的作用和区别
 
-
+- call()方法调用一个函数, 其具有一个指定的`this`值和分别地提供的参数(参数的列表)
+- apply() 方法调用一个具有给定`this`值的函数，以及作为一个数组（或类似数组对象）提供的参数。
+- call()在第一个参数之后的  后续所有参数就是传入该函数的值。apply() 只有两个参数，第一个是对象，第二个是数组，这个数组就是该函数的参数。
 
 ## 49.jQuery的属性拷贝（extend）的实现原理
 
+https://www.jb51.net/article/60689.htm
 
+## 50.下面node环境运行结果，以及原因
+
+```
+const obj = {
+  id: 2,
+  say: function() {
+    setTimeout(function() {
+      console.log('id:', this.id);
+    }, 50);
+  },
+  sayWithThis: function() {
+    let that = this;
+    setTimeout(function() {
+      console.log('this id:', that.id);
+    }, 500)
+  },
+  sayWithArrow: function() {
+    setTimeout(() => {
+      console.log('arrow id:', this.id);
+    }, 1500)
+  },
+  sayWithGlobalArrow: () => {
+    setTimeout(() => {
+      console.log('global id:', this.id);
+    }, 2000)
+  }
+};
+obj.say();
+obj.sayWithThis();
+obj.sayWithArrow();
+obj.sayWithGlobalArrow();
+```
+
+```
+id: undefined
+this id: 2
+arrow id: 2
+global id: undefined
+```
+
+- 定时器里面this指向全局对象`global`，因为`global`没有定义`id`属性，所以是`undefined`
+- 通过变量`that`代替this可以避免上一个问题，此时`that.id`指的是`obj.id`（对象调用属性方法，方法中`this`指向当前对象）
+- `setTimeout`里面传一个箭头函数，箭头函数体内的`this`对象，就是定义时所在的对象obj
+- `sayWithGlobalArrow`使用箭头函数，里面`this`指向全局对象`global`
+
+## 51.如何判断一个对象是数组
+
+```
+/**
+ * 判断一个对象是否是数组，参数不是对象或者不是数组，返回false
+ * 
+ * @param {Object} arg 需要测试是否为数组的对象
+ * @return {Boolean} 传入参数是数组返回true，否则返回false
+ */
+function isArray(arg) {
+  if (Array.isArray) {
+    return Array.isArray(arg);
+  } else {
+    return Object.prototype.toString.call(arg) === '[object Array]';
+  }
+}
+```
+
+#### 详情参考：
+
+https://www.cnblogs.com/leaf930814/p/6659996.html
+
+## 52.完成一个flag函数，接收数组作为参数，数组元素包含整数或数组，函数返回扁平化的数组，如：[1,[2,[3,4],5],6] => [1,2,3,4,5,6]
+
+```
+// 1. reduce
+function flatten(arr) {  
+  return arr.reduce((result, item)=> {
+    return result.concat(Array.isArray(item) ? flatten(item) : item);
+  }, []);
+}
+// 2. toString & split
+function flatten(arr) {
+  return arr.toString().split(',').map(function(item) {
+    return Number(item);
+  })
+}
+// 3. join & split
+function flatten(arr) {
+  return arr.join(',').split(',').map(function(item) {
+    return parseInt(item);
+  })
+}
+// 4. 递归
+function flatten(arr) {
+  var res = [];
+  arr.map(item => {
+    if(Array.isArray(item)) {
+      res = res.concat(flatten(item));
+    } else {
+      res.push(item);
+    }
+  });
+  return res;
+}
+// 5. 扩展运算符
+function flatten(arr) {
+  while(arr.some(item=>Array.isArray(item))) {
+    arr = [].concat(...arr);
+  }
+  return arr;
+}
+```
+
+#### 详情参考：
+
+https://www.cnblogs.com/wind-lanyan/p/9044130.html
 
 ## 填空题
 
@@ -1823,6 +1938,33 @@ https://blog.csdn.net/lxcao/article/details/52749421?utm_source=itdadao&utm_medi
   ===>
   0
   30
+  ```
+
+- ```
+  var a = 0;
+  function log() {
+    console.log(a);
+  }
+  function log2() {
+    var a = 1;
+    return log;
+  }
+  log2()();
+  
+  ===>
+  0
+  // var a = 0;
+  // function log2() {
+  //   var a = 1;
+  //   return function log() {
+  //       console.log(a);
+  //   };
+  // }
+  // log2()();
+  // ===> 1
+  函数log不是在log2的作用域里面，所以在执行的时候会在log作用域里面找a，没找到从父作用域
+  里面查找，找到 a = 0，所以打印0，如果是注释的那样，log是在log2的作用域里面，才会是打
+  印1
   ```
 
 - 
@@ -1972,5 +2114,3 @@ https://blog.csdn.net/lxcao/article/details/52749421?utm_source=itdadao&utm_medi
   D.5
 
   E.空
-
-- 

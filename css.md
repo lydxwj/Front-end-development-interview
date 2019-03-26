@@ -745,7 +745,7 @@ https://mp.weixin.qq.com/s/UxY7VWqMMOjvgE6L_dlixA
 
 ## 20.浏览器兼容问题
 
-- 不同浏览器的标签默认的margin和padding不同
+- 不同浏览器的标签默认的margin和padding不
 
   解决方案： css 里增加通配符 * { margin: 0; padding: 0; }或者其他样式初始化
 
@@ -808,6 +808,10 @@ https://blog.csdn.net/wanmeiyinyue315/article/details/79654984
 #### 详情参考：
 
 https://blog.csdn.net/u598975767/article/details/51242773
+
+## 22.对css动画做优化
+
+
 
 ## 选择题
 

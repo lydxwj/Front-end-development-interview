@@ -1797,6 +1797,16 @@ function flatten(arr) {
 
 https://www.cnblogs.com/wind-lanyan/p/9044130.html
 
+## 53.10个ajax的http请求同时发起，全部返回后展示所有响应结果，如何实现？如果我容忍最多失败3个http请求失败，如何设计这个功能？
+
+## 54.js的事件循环机制
+
+## 55.js设计简单的模板引擎
+
+## 56.金额转化加,
+
+num.toLocaleString();
+
 ## 填空题
 
 - ```

@@ -758,15 +758,13 @@ https://mp.weixin.qq.com/s/UxY7VWqMMOjvgE6L_dlixA
 - 图片默认有间距
   解决方案：使用float 为img 布局
 
-- IE9一下浏览器不能使用opacity
+- IE9以下浏览器不能使用opacity
   解决方案：
   opacity: 0.5;filter: alpha(opacity = 50);filter: progid:DXImageTransform.Microsoft.Alpha(style = 0, opacity = 50);
 
 - 边距重叠问题；当相邻两个元素都设置了margin 边距时，margin 将取最大值，舍弃最小值；
   解决方案：为了不让边重叠，可以给子元素增加一个父级元素，并设置父级元素为overflow:hidden；
 
-- cursor:hand 显示手型在safari 上不支持
-  解决方案：统一使用 cursor:pointer
 
 - 两个块级元素，父元素设置了overflow:auto；子元素设置了position:relative ;且高度大于父元素，在IE6、IE7会被隐藏而不是溢出；
 

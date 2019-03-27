@@ -897,6 +897,7 @@ var deepClone = function(currobj){
 ### 详情请参考:
 
 https://segmentfault.com/a/1190000011403163
+https://blog.csdn.net/anpoly/article/details/80114816
 
 ## 20.原型链
 

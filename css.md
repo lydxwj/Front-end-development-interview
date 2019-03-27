@@ -809,7 +809,55 @@ https://blog.csdn.net/u598975767/article/details/51242773
 
 ## 22.对css动画做优化
 
+- 尽可能多的利用硬件能力，如使用3D变形来开启GPU加速
 
+  ```
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+  -ms-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+  ```
+
+- CSS动画属性会触发整个页面的重排relayout、重绘repaint、重组recomposite
+      Paint(渲染)通常是其中最花费性能的，尽可能避免使用触发paint的CSS动画属性，这也是为什么我们推荐在CSS动画中使用webkit-transform: translateX(3em)的方案代替使用left: 3em，因为left会额外触发layout与paint，而webkit-transform只触发整个页面composite（这也是为什么推荐在CSS动画中使用webkit-transform: translateX(500px)的方案代替使用left: 500px）
+
+  尽量使用透明度(opacity)  和 切换(transform)
+
+- 动画过程有闪烁
+
+  ```
+  backface-visibility: hidden;
+  perspective: 1000;
+  ```
+
+- 尽可能少的使用box-shadows与gradients
+
+  box-shadows与gradients往往都是页面的性能杀手，尤其是在一个元素同时都使用了它们
+
+- 让动画元素不在文档流中，以减少重排
+
+  ```
+  `position: fixed;``position: absolute;`
+  ```
+
+- 不要一次性给所有内容都设置动画
+
+  因为单一的动画会非常流畅，但是和其他动画糅杂在一起的时候，就不那么流畅了。
+
+  所以需要给动画编排合理的时间。每秒60帧，动画平滑、流畅。
+
+- 保持动画的对象的z-index尽可能的高。理想的，这些元素应该是body元素的直接子元素。当然，这不是总可能的。所以你可以克隆一个元素，把它放在body元素下仅仅是为了做动画。
+- 将元素上设置will-change CSS属性，元素上有了这个属性，浏览器会提升这个元素成为一个复合层（不是总是）。这样动画就可以平滑的开始和结束。但是不要滥用这个属性，否则会大大增加内存消耗。
+
+- 减小复合层的尺寸，使用scale将它们放大，减少大量的存储空间
+
+#### 详情参考：
+
+https://segmentfault.com/a/1190000008015671
+
+https://www.w3cplus.com/animation/animation-performance.html
+
+https://www.cnblogs.com/leena/p/6930079.html
 
 ## 选择题
 

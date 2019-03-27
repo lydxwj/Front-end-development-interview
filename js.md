@@ -75,7 +75,7 @@ http://www.cnblogs.com/digdeep/p/4170059.html
 ### let, const
 
 - 这两个的用途与`var`类似，都是用来声明变量的，但在实际运用中他俩都有各自的特殊用途。
-- `let`则实际上为JavaScript新增了块级作用域。用它所声明的变量，只在`let`命令所在的代码块内有效，不允许在相同作用域内，重复声明同一个变量。
+- `let`则实际上为JavaScript新增了块级作用域。用它所声明的变量，只在`let`命令所在的代码块内有效，不允许在相同作用域内，重复声明同一个变量。没有变量提升。
 - `const`也用来声明变量，但是声明的是常量。一旦声明，常量的值就不能改变。
 - `const`实际上保证的，并不是变量的值不得改动，而是变量指向的那个内存地址不得改动。对于简单类型的数据（数值、字符串、布尔值），值就保存在变量指向的那个内存地址，因此等同于常量。但对于复合类型的数据（主要是对象和数组），变量指向的内存地址，保存的只是一个指针，`const`只能保证这个指针是固定的，至于它指向的数据结构是不是可变的，就完全不能控制了。因此，将一个对象声明为常量必须非常小心。
 
@@ -850,7 +850,7 @@ https://www.cnblogs.com/zuobaiquan01/p/8874305.html
 
 ## 19.深浅拷贝
 
-**浅拷贝:** 浅拷贝就是对内存地址的复制，让目标对象指针和源对象指向同一片内存空间.
+**浅拷贝:** 浅拷贝就是对内存地址的复制，让目标对象指针和源对象指向同一片内存空间.   如Array.slice()与Array.concat()
 
 ```
 function shallowCopy(obj) {
@@ -868,7 +868,7 @@ function shallowCopy(obj) {
 var newObj = Object.assign({}, originObj);
 ```
 
-**深拷贝:** 深拷贝是指拷贝对象的具体内容，而内存地址是自主分配的，拷贝结束之后，两个对象虽然存的值是相同的，但是内存地址不一样，两个对象也互不影响，互不干涉。
+**深拷贝:** 深拷贝是指拷贝对象的具体内容，而内存地址是自主分配的，拷贝结束之后，两个对象虽然存的值是相同的，但是内存地址不一样，两个对象也互不影响，互不干涉。   如JSON.parse()与 JSON.stringify()
 
 ```
 var deepClone = function(currobj){
@@ -897,6 +897,8 @@ var deepClone = function(currobj){
 ### 详情请参考:
 
 https://segmentfault.com/a/1190000011403163
+
+https://blog.csdn.net/anpoly/article/details/80114816
 
 ## 20.原型链
 
@@ -1239,7 +1241,7 @@ https://www.cnblogs.com/baiyangyuanzi/p/6726258.html
 - GET请求会被浏览器主动cache，而POST不会，除非手动设置。 
 - GET请求只能进行url编码，而POST支持多种编码方式。
 - GET请求参数会被完整保留在浏览器历史记录里，而POST中的参数不会被保留。
-- GET请求在URL中传送的参数是有长度限制的，而POST么有。
+- GET请求在URL中传送的参数是有长度限制的，而POST没有。
 - 对参数的数据类型，GET只接受ASCII字符，而POST没有限制。
 - GET比POST更不安全，因为参数直接暴露在URL上，所以不能用来传递敏感信息。
 - GET参数通过URL传递，POST放在Request body中。

@@ -850,7 +850,7 @@ https://www.cnblogs.com/zuobaiquan01/p/8874305.html
 
 ## 19.深浅拷贝
 
-**浅拷贝:** 浅拷贝就是对内存地址的复制，让目标对象指针和源对象指向同一片内存空间.
+**浅拷贝:** 浅拷贝就是对内存地址的复制，让目标对象指针和源对象指向同一片内存空间.   如Array.slice()与Array.concat()
 
 ```
 function shallowCopy(obj) {
@@ -868,7 +868,7 @@ function shallowCopy(obj) {
 var newObj = Object.assign({}, originObj);
 ```
 
-**深拷贝:** 深拷贝是指拷贝对象的具体内容，而内存地址是自主分配的，拷贝结束之后，两个对象虽然存的值是相同的，但是内存地址不一样，两个对象也互不影响，互不干涉。
+**深拷贝:** 深拷贝是指拷贝对象的具体内容，而内存地址是自主分配的，拷贝结束之后，两个对象虽然存的值是相同的，但是内存地址不一样，两个对象也互不影响，互不干涉。   如JSON.parse()与 JSON.stringify()
 
 ```
 var deepClone = function(currobj){

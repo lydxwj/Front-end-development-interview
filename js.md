@@ -1799,15 +1799,94 @@ function flatten(arr) {
 
 https://www.cnblogs.com/wind-lanyan/p/9044130.html
 
-## 53.10个ajax的http请求同时发起，全部返回后展示所有响应结果，如何实现？如果我容忍最多失败3个http请求失败，如何设计这个功能？
+## 53.5个ajax的http请求同时发起，全部返回后展示所有响应结果，如何实现？如果我容忍最多失败2个http请求失败，如何设计这个功能？
+
+```
+const ajax1 = axios.post(url1,data1);
+const ajax2 = axios.post(url2,data2);
+const ajax3 = axios.post(url3,data3);
+const ajax4 = axios.post(url4,data4);
+const ajax5 = axios.post(url5,data5);
+Promise.all([ ajax1, ajax2, ajax3, ajax4, ajax5 ])
+.then(successCallback)
+.catch(errorCallback);
+```
+
+```
+function FetchData() {
+  return new Promise((resolve, reject) => {
+    let num = 0;
+    let errNum = 0;
+    const res = [];
+    const url = [ url1, url2, url3, url4, url5 ];
+    const data = [ data1, data2, data3, data4, data5 ];
+    for (let i = 0; i < 5; i++) {
+      axios.post(url[i], data[i]).then(respond => {
+        num = num + 1;
+        respond.num = i;
+        res[i] = respond;
+        if (errNum + num == 5) {
+          if (errNum < 3) {
+            resolve(res);
+          }
+          reject(res)
+        }
+      }).catch(err => {
+        res[i] = err;
+        errNum = errNum + 1;
+        if (errNum + num == 5) {
+          if (errNum < 3) {
+            resolve(res);
+          }
+          reject(res)
+        }
+      });
+    }
+  })
+}
+```
 
 ## 54.js的事件循环机制
 
+- javascript从诞生之日起就是一门单线程的非阻塞的脚本语言。单线程意味着，javascript代码在执行的任何时候，都只有一个主线程来处理所有的任务。而非阻塞则是当代码需要进行一项异步任务（无法立刻返回结果，需要花一定时间才能返回的任务，如I/O事件）的时候，主线程会挂起（pending）这个任务，然后在异步任务返回结果的时候再根据一定规则去执行相应的回调。
+
+- 当我们调用一个方法的时候，js会生成一个与这个方法对应的执行环境（context），又叫执行上下文。这个执行环境中存在着这个方法的私有作用域，上层作用域的指向，方法的参数，这个作用域中定义的变量以及这个作用域的this对象。 而当一系列方法被依次调用的时候，因为js是单线程的，同一时间只能执行一个方法，于是这些方法被排队在一个单独的地方。这个地方被称为执行栈。
+
+- 当一个脚本第一次执行的时候，js引擎会解析这段代码，并将其中的同步代码按照执行顺序加入执行栈中，然后从头开始执行。如果当前执行的是一个方法，那么js会向执行栈中添加这个方法的执行环境，然后进入这个执行环境继续执行其中的代码。当这个执行环境中的代码 执行完毕并返回结果后，js会退出这个执行环境并把这个执行环境销毁，回到上一个方法的执行环境。。这个过程反复进行，直到执行栈中的代码全部执行完毕。
+
+- 当一个异步代码（如发送ajax请求数据）执行后会如何呢？前文提过，js的另一大特点是非阻塞，实现这一点的关键在于下面要说的这项机制——事件队列（Task Queue）。
+
+  js引擎遇到一个异步事件后并不会一直等待其返回结果，而是会将这个事件挂起，继续执行执行栈中的其他任务。当一个异步事件返回结果后，js会将这个事件加入与当前执行栈不同的另一个队列，我们称之为事件队列。被放入事件队列不会立刻执行其回调，而是等待当前执行栈中的所有任务都执行完毕， 主线程处于闲置状态时，主线程会去查找事件队列是否有任务。如果有，那么主线程会从中取出排在第一位的事件，并把这个事件对应的回调放入执行栈中，然后执行其中的同步代码...，如此反复，这样就形成了一个无限的循环。这就是这个过程被称为“事件循环（Event Loop）”的原因。
+
+**详情参考：**
+
+https://www.cnblogs.com/cangqinglang/p/8967268.html
+
 ## 55.js设计简单的模板引擎
+
+https://www.liaoxuefeng.com/article/001426512790239f83bfb47b1134b63b09a57548d06e5c5000
+
+https://www.deanhan.cn/js-template.html
+
+https://www.cnblogs.com/lianmin/p/7691831.html
+
+https://www.cnblogs.com/dolphinX/p/3489269.html
 
 ## 56.金额转化加,
 
 num.toLocaleString();
+
+## 57.new之后发生了什么
+
+- 一个继承自 *Foo*`.prototype` 的新对象被创建。
+- 使用指定的参数调用构造函数 `Foo` ，并将 `this` 绑定到新创建的对象。`new Foo` 等同于 `new `*Foo*`()`，也就是没有指定参数列表，*Foo* 不带任何参数调用的情况。
+- 由构造函数返回的对象就是 `new` 表达式的结果。如果构造函数没有显式返回一个对象，则使用步骤1创建的对象。（一般情况下，构造函数不返回值，但是用户可以选择主动返回对象，来覆盖正常的对象创建步骤）
+
+**详情参考：**
+
+https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/new
+
+https://www.cnblogs.com/bear-ff/p/5489386.html
 
 ## 填空题
 
